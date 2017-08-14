@@ -2,7 +2,7 @@
 
 import random
 import requests
-import json
+#import json
 from libs import connect_db
 #from datetime import datetime
 from time import sleep
@@ -63,9 +63,9 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
         entry_camera = 'entry-camera-02'
         exit_camera = 'exit-camera-02'
         di_pin = 'DI1'
-    headers = {"content-type": "application/json"}
+    #headers = {"content-type": "application/json"}
     button_header = {"content-type": "*/*"}
-    reconcile_url = 'http://' + serverIp + ':' + port + '/booking/reconcile'
+    #reconcile_url = 'http://' + serverIp + ':' + port + '/booking/reconcile'
     button_url = 'http://' + serverIp + ':' + port + '/test/pushButton/' + di_pin
     
     if mode=='entry':
@@ -78,7 +78,7 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
                 print button_url
                 r = requests.post(button_url, headers=button_header)
             except:
-                print 'Post request %s failed with status code: %s', (reconcile_url, r.status_code)
+                print 'Post request %s failed with status code: %s', (button_url, r.status_code)
             sleep(10)
             i = i+1
             if i==number:
@@ -89,27 +89,12 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
             print 'Start exit reconcile simulation for %s \n' %veh.vehicleNo
             cameraId = exit_camera
             vehicleNo = veh.vehicleNo
-            '''
-            booking_id = veh[0]
-            description = ' '
-            paymentType = 'Cash'
-            secondaryBookingId = 0
-            veh_type = 4
-            '''
             recorded_vehicle(serverIp, vehicleNo, ' ', cameraId, 'EXIT')
-            '''
-            time = str(datetime.now())
-            tmp = time.split(' ')
-            time = tmp[0] + 'T' + tmp[1] + 'Z'
-
-            data = {'bookingId': booking_id, 'cameraMacAddress': cameraId, 'description': description, 'paymentType': paymentType, 'secondaryBookingId': secondaryBookingId,
-                     'vehicleNumber': vehicleNo, 'vehicleType': veh_type}
-
             try:
-                r = requests.post(reconcile_url, data=json.dumps(data), headers=headers)
+                r = requests.post(button_url, headers=button_header)
             except:
-                print 'Post request %s failed with status code: %s' %reconcile_url %r.status_code
-            '''
+                print 'Post request %s failed with status code: %s', (button_url, r.status_code)
+
             sleep(10)
             i = i+1
             if i==number:

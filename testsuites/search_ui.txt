@@ -1,0 +1,19 @@
+*** Settings ***
+Suite setup     Pre Setup
+Library         ../perform.py
+Library         ../libs.py
+Library			../UI/ui_libs.py
+
+*** Variables ***
+${workspace}
+${server_ip}
+${port}
+
+*** Keywords ***
+Pre Setup
+
+
+*** Test Cases ***
+Test Simulated Entry Booking For Ipm-local
+    [Tags]
+	open_page	  page_url=localhost:50211

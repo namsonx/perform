@@ -45,7 +45,7 @@ def main():
     workspace = workspace.strip(' \n\t')
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\performance\\testsuites\\booking_simulation.txt')
+    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\performance\\testsuites\\search_ui.txt')
     parser.add_argument('-s', '--server_ip', help='Input server ip address', default='localhost')
     parser.add_argument('-p', '--port', help='Input port number', default='50211')
     parser.add_argument('-d', '--outputdir', help='variable', default=workspace)

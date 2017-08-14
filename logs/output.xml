@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20170811 18:28:20.651" generator="Robot 3.0.2 (Python 2.7 on win32)">
+<suite source="C:\Users\mas2hc\Desktop\workspace\performance\testsuites\booking_simulation.txt" id="s1" name="Booking Simulation">
+<kw type="setup" name="Pre Setup">
+<kw name="Delete All Booking" library="libs">
+<arguments>
+<arg>${server_ip}</arg>
+<arg>${2}</arg>
+</arguments>
+<status status="PASS" endtime="20170811 18:28:21.333" starttime="20170811 18:28:21.248"></status>
+</kw>
+<status status="PASS" endtime="20170811 18:28:21.334" starttime="20170811 18:28:21.248"></status>
+</kw>
+<test id="s1-t1" name="Test Simulated Entry Booking For Ipm-local">
+<kw name="Data Generate" library="perform">
+<arguments>
+<arg>${workspace}</arg>
+<arg>num=${3}</arg>
+<arg>direction=ENTRY</arg>
+</arguments>
+<assign>
+<var>${veh_list}</var>
+</assign>
+<msg timestamp="20170811 18:28:21.339" level="INFO">Simulating 3 number of booking</msg>
+<msg timestamp="20170811 18:28:21.339" level="INFO">${veh_list} = [&lt;objects.entry_vehicle object at 0x00000000031BFE10&gt;, &lt;objects.entry_vehicle object at 0x00000000031BFF28&gt;, &lt;objects.entry_vehicle object at 0x00000000031BFF60&gt;]</msg>
+<status status="PASS" endtime="20170811 18:28:21.339" starttime="20170811 18:28:21.335"></status>
+</kw>
+<kw name="Booking And Reconcile Simulate" library="perform">
+<arguments>
+<arg>${veh_list}</arg>
+<arg>${3}</arg>
+<arg>${server_ip}</arg>
+<arg>${port}</arg>
+<arg>entry</arg>
+<arg>${2}</arg>
+</arguments>
+<msg timestamp="20170811 18:28:21.486" level="INFO">Starting new HTTP connection (1): 192.168.0.179</msg>
+<msg timestamp="20170811 18:28:31.632" level="INFO">Starting new HTTP connection (1): 192.168.0.179</msg>
+<msg timestamp="20170811 18:28:43.774" level="INFO">Starting new HTTP connection (1): 192.168.0.179</msg>
+<msg timestamp="20170811 18:28:53.818" level="INFO">Start booking simulation: 
+
+Starting entry booking simulation for KA99MS6964
+
+New vehicle is recorded 
+
+Starting entry booking simulation for KA99MS4603
+
+New vehicle is recorded 
+
+Starting entry booking simulation for KA99MS9686
+
+New vehicle is recorded</msg>
+<status status="PASS" endtime="20170811 18:28:53.819" starttime="20170811 18:28:21.340"></status>
+</kw>
+<kw name="Get Num Current Booking" library="libs">
+<arguments>
+<arg>${server_ip}</arg>
+<arg>${2}</arg>
+</arguments>
+<assign>
+<var>${num_booking}</var>
+</assign>
+<msg timestamp="20170811 18:28:53.875" level="INFO">${num_booking} = 2</msg>
+<status status="PASS" endtime="20170811 18:28:53.876" starttime="20170811 18:28:53.819"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${num_booking}</arg>
+<arg>${3}</arg>
+</arguments>
+<msg timestamp="20170811 18:28:53.878" level="INFO">Argument types are:
+&lt;type 'long'&gt;
+&lt;type 'int'&gt;</msg>
+<msg timestamp="20170811 18:28:53.878" level="FAIL">2 != 3</msg>
+<status status="FAIL" endtime="20170811 18:28:53.878" starttime="20170811 18:28:53.876"></status>
+</kw>
+<status status="FAIL" endtime="20170811 18:28:53.879" critical="yes" starttime="20170811 18:28:21.334">2 != 3</status>
+</test>
+<test id="s1-t2" name="Test Simulated Exit Reconcile For Ipm-local">
+<kw name="Get Vehicle Not Reconcile" library="perform">
+<arguments>
+<arg>${server_ip}</arg>
+</arguments>
+<assign>
+<var>${veh_list}</var>
+</assign>
+<msg timestamp="20170811 18:28:53.933" level="INFO">${veh_list} = [(36L, 'KA99MS6964', 2L), (37L, 'KA99MS9686', 2L)]</msg>
+<status status="PASS" endtime="20170811 18:28:53.934" starttime="20170811 18:28:53.882"></status>
+</kw>
+<kw name="Booking And Reconcile Simulate" library="perform">
+<arguments>
+<arg>${veh_list}</arg>
+<arg>${3}</arg>
+<arg>${server_ip}</arg>
+<arg>${port}</arg>
+<arg>exit</arg>
+<arg>${2}</arg>
+</arguments>
+<msg timestamp="20170811 18:29:14.117" level="INFO">Start booking simulation: 
+
+Start exit reconcile simulation for KA99MS6964 
+
+New vehicle is recorded 
+
+Start exit reconcile simulation for KA99MS9686 
+
+New vehicle is recorded</msg>
+<status status="PASS" endtime="20170811 18:29:14.118" starttime="20170811 18:28:53.934"></status>
+</kw>
+<kw name="Get Num Reconciliation" library="libs">
+<arguments>
+<arg>${server_ip}</arg>
+<arg>${2}</arg>
+</arguments>
+<assign>
+<var>${num_reconcile}</var>
+</assign>
+<msg timestamp="20170811 18:29:14.176" level="INFO">${num_reconcile} = 2</msg>
+<status status="PASS" endtime="20170811 18:29:14.176" starttime="20170811 18:29:14.118"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${num_reconcile}</arg>
+<arg>${3}</arg>
+</arguments>
+<msg timestamp="20170811 18:29:14.177" level="INFO">Argument types are:
+&lt;type 'long'&gt;
+&lt;type 'int'&gt;</msg>
+<msg timestamp="20170811 18:29:14.178" level="FAIL">2 != 3</msg>
+<status status="FAIL" endtime="20170811 18:29:14.178" starttime="20170811 18:29:14.176"></status>
+</kw>
+<status status="FAIL" endtime="20170811 18:29:14.179" critical="yes" starttime="20170811 18:28:53.880">2 != 3</status>
+</test>
+<status status="FAIL" endtime="20170811 18:29:14.181" starttime="20170811 18:28:20.659"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="2" pass="0">Critical Tests</stat>
+<stat fail="2" pass="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="2" id="s1" name="Booking Simulation" pass="0">Booking Simulation</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

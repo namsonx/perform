@@ -1,0 +1,19 @@
+==============================Started running test==============================
+List out all location:
+('location: ', 3L, 'KOR', 1970L, 2000L)
+('location: ', 4L, 'KOR Frontgate', 970L, 1000L)
+('location: ', 5L, 'KOR Backgate', 1000L, 1000L)
+List out all camera:
+('Camera is: ', 1L, 'entry-camera-01', 4L)
+('Camera is: ', 2L, 'exit-camera-01', 4L)
+('Camera is: ', 3L, 'entry-camera-02', 5L)
+('Camera is: ', 4L, 'exit-camera-02', 5L)
+List out all camera config:
+('Camera config is: ', 1L, 1L, 'DI0', None, 4L)
+('Camera config is: ', 2L, 2L, None, None, 4L)
+('Camera config is: ', 3L, 3L, None, None, 4L)
+('Camera config is: ', 4L, 4L, None, None, 4L)
+======================Starting robot running======================
+
+ Clean up old log files 
+('Runing status is: ', 0)

@@ -1,0 +1,3 @@
+{'status': 'ENTRY', 'vehicleType': ' ', 'image': ' ', 'cameraId': ' ', 'time': ' ', 'vehicleNo': 'KA99MS6964'}
+{'status': 'ENTRY', 'vehicleType': ' ', 'image': ' ', 'cameraId': ' ', 'time': ' ', 'vehicleNo': 'KA99MS4603'}
+{'status': 'ENTRY', 'vehicleType': ' ', 'image': ' ', 'cameraId': ' ', 'time': ' ', 'vehicleNo': 'KA99MS9686'}

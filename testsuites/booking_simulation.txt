@@ -10,20 +10,20 @@ ${port}
 
 *** Keywords ***
 Pre Setup
-	delete_all_booking    ${server_ip}     ${2}
+	delete_all_booking    ${server_ip}     ${4}
 
 *** Test Cases ***
 Test Simulated Entry Booking For Ipm-local
     [Tags]
     ${veh_list} =   data_generate    ${workspace}    num=${3}    direction=ENTRY
-    booking_and_reconcile_simulate    ${veh_list}    ${3}    ${server_ip}    ${port}    entry    ${2}
-    ${num_booking} =    get_num_current_booking     ${server_ip}    ${2}
+    booking_and_reconcile_simulate    ${veh_list}    ${3}    ${server_ip}    ${port}    entry    ${4}
+    ${num_booking} =    get_num_current_booking     ${server_ip}    ${4}
     Should Be Equal     ${num_booking}     ${3}
-    sleep   30
+    sleep   20
     
 Test Simulated Exit Reconcile For Ipm-local
 	[Tags]
 	${veh_list} =    get_vehicle_not_reconcile     ${server_ip}
-	booking_and_reconcile_simulate    ${veh_list}    ${3}    ${server_ip}    ${port}    exit    ${2}
-	${num_reconcile} =     get_num_reconciliation     ${server_ip}    ${2}
+	booking_and_reconcile_simulate    ${veh_list}    ${3}    ${server_ip}    ${port}    exit    ${4}
+	${num_reconcile} =     get_num_reconciliation     ${server_ip}    ${4}
 	Should Be Equal     ${num_reconcile}     ${3}

@@ -50,11 +50,11 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
     i=0
     print 'Start booking simulation: \n'
     #hardcode location id = 4
-    if location_id==2:
+    if location_id==4:
         entry_camera = 'entry-camera-01'
         exit_camera = 'exit-camera-01'
         di_pin = 'DI0'
-    if location_id==3:
+    if location_id==5:
         entry_camera = 'entry-camera-02'
         exit_camera = 'exit-camera-02'
         di_pin = 'DI1'
@@ -81,9 +81,9 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
             
     if mode=='exit':
         for veh in veh_list:
-            print 'Start exit reconcile simulation for %s \n' %veh[1]
+            print 'Start exit reconcile simulation for %s \n' %veh.vehicleNo
             cameraId = exit_camera
-            vehicleNo = veh[1]
+            vehicleNo = veh.vehicleNo
             '''
             booking_id = veh[0]
             description = ' '
@@ -118,7 +118,8 @@ def get_vehicle_not_reconcile(serverIp):
     vehicles = x.fetchall()
     for veh in vehicles:
         vehicle = vehicle()
-        veh_list.append(veh)
+        vehicle.vehicleNo = veh[1]
+        veh_list.append(vehicle)
         
     sql_conn.close()    
     return veh_list

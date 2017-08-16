@@ -24,6 +24,7 @@ Test Simulated Entry Booking For Ipm-local
 Test Simulated Exit Reconcile For Ipm-local
 	[Tags]
 	${veh_list} =    get_vehicle_not_reconcile     ${server_ip}
-	booking_and_reconcile_simulate    ${veh_list}    ${3}    ${server_ip}    ${port}    exit    ${2}
+	booking_and_reconcile_simulate    ${veh_list}    ${2}    ${server_ip}    ${port}    exit    ${2}
 	${num_reconcile} =     get_num_reconciliation     ${server_ip}    ${2}
-	Should Be Equal     ${num_reconcile}     ${3}
+	Should Be Equal     ${num_reconcile}     ${2}
+	

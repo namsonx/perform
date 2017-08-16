@@ -21,12 +21,18 @@ class parking_location(object):
         self.exit_cam = kwargs.get('exit_cam', None)
         self.super_loc_id = kwargs.get('super_loc_id', None)
         self.cloud_id = kwargs.get('cloud_id', None)
+        self.entry_buttonPin = 'none'
+        self.entry_barrierPin = 'none'
+        self.exit_buttonPin = 'none'
+        self.exit_barrierPin = 'none'
         
 class camera_obj(object):
     def __init__(self, cam_id, **kwargs):
         self.cameraId = cam_id
         self.mac_address = kwargs.get('mac_address', None)
         self.locationId = kwargs.get('locationId', None)
+        self.buttonPin = kwargs.get('buttonPin', None)
+        self.barrierPin = kwargs.get('barrierPin', None)
         
 class cam_moxa_cfg():
     def __init__(self, cfg_id, **kwargs):

@@ -11,9 +11,9 @@ ${port}
 
 *** Keywords ***
 Pre Setup
-
+	Setup
 
 *** Test Cases ***
-Test Simulated Entry Booking For Ipm-local
+Test Search Ui Ipm-local
     [Tags]
-	open_page	  page_url=localhost:50211
+	open_page	  page_url=http://localhost:50211

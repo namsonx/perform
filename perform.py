@@ -122,6 +122,12 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
                 r = requests.post(button_url, headers=button_header)
             except:
                 print 'Post request %s failed with status code: %s', (button_url, r.status_code)
+        if dio_pin!='none':
+            try:
+                print barrie_url
+                r = requests.post(barrie_url, headers=button_header)
+            except:
+                print 'Post request %s failed with status code: %s', (button_url, r.status_code)
         sleep(random.randint(10,20))
         i = i+1
         if i==number:

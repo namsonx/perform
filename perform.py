@@ -36,7 +36,7 @@ def data_generate(workspace, num, direction='ENTRY'):
         veh = vehicle()
         veh.direction = direction
             
-        veh.vehicleNo = 'KA99MS'
+        veh.vehicleNo = 'KA'+str(random.randint(0, 99))+'MS'
         veh.vehicleNo = veh.vehicleNo + str(random.randint(1000, 9999))
         data = {"cameraId": veh.cameraId, "image": veh.vehicleImage, "vehicleNo": veh.vehicleNo, "time": veh.time, "status": veh.direction, "vehicleType": veh.type}
         f.write(str(data))
@@ -152,7 +152,7 @@ def random_booking_and_reconcile(workspace, serverIp, port):
         print 'location is: ', loc
 
     count = 0
-    while count<20:
+    while count<1000:
         '''
         location = random.choice(loc_list)
         dest = random.choice(dests)

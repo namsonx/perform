@@ -2,8 +2,9 @@
 
 import random
 import requests
+from threading import Thread
 #import json
-from libs import connect_db, get_camera_list, get_cam_moxa_cfg
+from libs import connect_db, get_camera_list, get_cam_moxa_cfg, get_parking_locations
 #from datetime import datetime
 from time import sleep
 from objects import vehicle, parking_location
@@ -102,70 +103,82 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
     barrie_url = 'http://' + serverIp + ':' + port + '/test/pushButton/' + dio_pin
     
     if mode=='entry':
-        for veh in veh_list:
-            print 'Starting entry booking simulation for %s\n' %veh.vehicleNo
-            veh.cameraId = entry_camera
-            recorded_vehicle(serverIp, veh.vehicleNo, veh.vehicleImage, veh.cameraId, veh.direction)
-            #sleep(1)
-            print button_url
-            if di_pin!='none':
-                try:
-                    print button_url
-                    r = requests.post(button_url, headers=button_header)
-                except:
-                    print 'Post request %s failed with status code: %s', (button_url, r.status_code)
-            sleep(10)
-            i = i+1
-            if i==number:
-                break
-            
+        cameraId = entry_camera
+        direction = dests[0]
+        
     if mode=='exit':
-        for veh in veh_list:
-            print 'Start exit reconcile simulation for %s \n' %veh.vehicleNo
-            cameraId = exit_camera
-            vehicleNo = veh.vehicleNo
-            recorded_vehicle(serverIp, vehicleNo, ' ', cameraId, dests[1])
-            print barrie_url
-            if dio_pin!='none':
-                try:
-                    r = requests.post(barrie_url, headers=button_header)
-                except:
-                    print 'Post request %s failed with status code: %s', (button_url, r.status_code)
-
-            sleep(10)
-            i = i+1
-            if i==number:
-                break
-            
-def random_booking_and_reconcile(workspace, serverIp, port, cam_list):
+        cameraId = exit_camera
+        direction = dests[1]
+        
+    for veh in veh_list:
+        print 'Starting %s booking simulation for %s\n', direction, veh.vehicleNo
+        veh.direction = direction 
+        recorded_vehicle(serverIp, veh.vehicleNo, veh.vehicleImage, cameraId, veh.direction)
+        #sleep(1)
+        print button_url
+        if di_pin!='none':
+            try:
+                print button_url
+                r = requests.post(button_url, headers=button_header)
+            except:
+                print 'Post request %s failed with status code: %s', (button_url, r.status_code)
+        sleep(random.randint(10,20))
+        i = i+1
+        if i==number:
+            break
+               
+def random_booking_and_reconcile(workspace, serverIp, port):
     print 'Start performance test for multi-location\n'
-    location_objs = []
-    locationId_list = []
-    dests = ['ENTRY', 'EXIT']
+    #dests = ['ENTRY', 'EXIT']
+    loc_list = get_parking_locations(serverIp)
+    cam_list = get_camera_list(serverIp)
+    
+    for location in loc_list:
+        check = 0
+        for cam in cam_list:
+            if location.locationId==cam.locationId:
+                check = check+1
+                break
+        if check==0:
+            loc_list.remove(location)
+    
+    for loc in loc_list:
+        print 'location is: ', loc
 
-    for cam in cam_list:
-        if cam.locationId not in locationId_list:
-            location = parking_location(cam.locationId)
-            location.entry_cam = cam.mac_address
-            location_objs.append(location)
-        else:
-            for loc_obj in location_objs:
-                if cam.locationId==loc_obj.locationId:
-                    loc_obj.exit_cam = cam.mac_address
-            
-            
-    print 'List location id is: %s\n' %locationId_list
     count = 0
-    while count<1000:
-        location = random.choice(location_objs)
+    while count<20:
+        '''
+        location = random.choice(loc_list)
         dest = random.choice(dests)
         if dest=='ENTRY':
             mode = 'entry'
         if dest=='EXIT':
             mode = 'exit'
-        veh = data_generate(workspace, 1, dest)
-        booking_and_reconcile_simulate(veh, 1, serverIp, port, mode, location.locationId)
-        sleep(10)
+        '''
+        t1_list = []
+        t2_list = []
+        for location in loc_list:       
+            veh = data_generate(workspace, 1, 'ENTRY')
+            t1 = Thread(target=booking_and_reconcile_simulate, args=(veh, 1, serverIp, port, 'entry', location.locationId))
+            t1.start()
+            t1_list.append(t1)
+            veh = data_generate(workspace, 1, 'EXIT')
+            t2 = Thread(target=booking_and_reconcile_simulate, args=(veh, 1, serverIp, port, 'exit', location.locationId))
+            t2.start()
+            t2_list.append(t2)
+        while True:
+            t1_status = []
+            t2_status =[]
+            for t1 in t1_list:
+                t1_status.append(t1.isAlive())                
+            for t2 in t2_list:
+                t2_status.append(t2.isAlive())
+            print 'Debug: ', t1_status
+            
+            if (True in t1_status) or (True in t2_status):
+                continue
+            break
+        
         count = count + 1
          
 def get_vehicle_not_reconcile(serverIp):
@@ -177,6 +190,7 @@ def get_vehicle_not_reconcile(serverIp):
     for veh in vehicles:
         vehi = vehicle()
         vehi.vehicleNo = veh[1]
+        vehi.vehicleImage = ' '
         print 'test print veh No: ', veh[1]
         veh_list.append(vehi)
         

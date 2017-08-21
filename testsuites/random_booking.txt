@@ -1,0 +1,18 @@
+*** Settings ***
+Suite setup     Pre Setup
+Library         ../perform.py
+Library         ../libs.py
+
+*** Variables ***
+${workspace}
+${server_ip}
+${port}
+
+*** Keywords ***
+Pre Setup
+	Setup
+
+*** Test Cases ***
+Test Simulated Entry Booking For Ipm-local
+    [Tags]
+    random_booking_and_reconcile	 ${workspace}	  ${server_ip}     ${port}

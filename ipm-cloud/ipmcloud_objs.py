@@ -14,4 +14,42 @@ class parking_place(object):
         self.createdBy = kwargs.get('createdBy', 'Auto')
         self.autoExit = kwargs.get('autoExit', 'Yes')
         
+class parking_block(object):
+    
+    def __init__(self, placeId, blockName, unicode, **kwargs):
+        self.id = None
+        self.placeId = placeId
+        self.name = blockName
+        self.unicode = unicode
+        self.availability = kwargs.get('availability', 0)
+        self.createdBy = kwargs.get('createdBy', 'Auto')
+        self.parkGuidanceURL = kwargs.get('parkGuidanceURL', None)
+        self.parkFor = kwargs.get('parkFor', 4)
+        self.solutionType = kwargs.get('solutionType', 0)
         
+class parking_slot(object):
+    
+    def __init__(self, placeId, blockId, slotName, tagId, unicode, **kwargs):
+        self.id = None
+        self.placeId = placeId
+        self.blockId = blockId
+        self.slotName = slotName
+        self.tagId = tagId
+        self.unicode = unicode
+        self.availability = kwargs.get('availability', 1)
+        self.createdBy = kwargs.get('createdBy', 'Auto')
+        
+class tenant(object):
+    
+    def __init__(self, placeId, tenantName, **kwargs):
+        self.id = None
+        self.placeId = placeId
+        self.name = tenantName
+        
+class vehicleTenant(object):
+    
+    def __init__(self, tenantId, vehicleNo, vehicleType):
+        self.id = None
+        self.tenantId = tenantId
+        self.vehicleNo = vehicleNo
+        self.vehicleType = vehicleType        

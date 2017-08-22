@@ -1,0 +1,30 @@
+*** Settings ***
+Suite setup     Pre Setup
+Library         ../perform.py
+Library         ../ipm-cloud/ipm_libs.py
+
+*** Variables ***
+${workspace}
+${server_ip}
+${port}
+
+*** Keywords ***
+Pre Setup
+	Setup
+	#delete_all_booking    ${server_ip}     ${2}
+
+*** Test Cases ***
+#Test Creating Parking Place
+#    [Tags]
+#    create_parking_place	 ${server_ip}	 ${port}	 auto-test	   auto001
+#    sleep   10
+    
+#Test Creating Parking Block
+#	[Tags]
+#	create_parking_block	 ${server_ip}	 ${port}     ${3} 	 ${123}     autoBlock     blk	  solutionType = ${2}
+#	sleep   10
+	
+Test Deleting Parking Block
+	[Tags]
+	delete_parking_place	 ${server_ip}     ${96}
+	sleep   10

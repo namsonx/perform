@@ -33,36 +33,8 @@ def runtests_and_collectlogs(args, runtestlog, workspace):
     print 'Runing status is: ', status
     log = str(('Runing status is: ', status))
     runtestlog.write((log + '\n'))
-
-def main():
-    """
-    if len(sys.argv)<2:
-        print'The server and port should be provide \n'
-        sys.exit(0)
-    """   
-    global workspace
-    workspace = os.getcwd()
-    workspace = workspace.strip(' \n\t')
     
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\random_booking.txt')
-    parser.add_argument('-s', '--server_ip', help='Input server ip address', default='localhost')
-    parser.add_argument('-p', '--port', help='Input port number', default='50211')
-    parser.add_argument('-d', '--outputdir', help='variable', default=workspace)
-    
-    args = parser.parse_args()
-    
-    server_ip = args.server_ip   
-
-    time = str(datetime.now())
-    tmp = time.split(' ')
-    time = tmp[0]+ '-' + tmp[1].split('.')[0]
-    time = time.replace(':', '-')
-    
-    runtestlogfile = args.outputdir + '\\logs\\runtest' + time +'.log'
-    runtestlog = open(runtestlogfile, 'w')
-    runtestlog.write('==============================Started running test==============================\n')
-    
+def get_basic_info_ipmlocal(server_ip, runtestlog):
     print 'List out all location:\n'
     runtestlog.write('List out all location:\n')
     location_list = get_parking_locations(server_ip)
@@ -86,6 +58,39 @@ def main():
         print 'Camera config is: ', cfg.cfg_id, cfg.cam_id, cfg.buttonPin, cfg.barrierPin, cfg.vehicleType
         log = str(('Camera config is: ', cfg.cfg_id, cfg.cam_id, cfg.buttonPin, cfg.barrierPin, cfg.vehicleType))
         runtestlog.write((log + '\n'))
+
+def main():
+    """
+    if len(sys.argv)<2:
+        print'The server and port should be provide \n'
+        sys.exit(0)
+    """   
+    global workspace
+    workspace = os.getcwd()
+    workspace = workspace.strip(' \n\t')
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\create_parking_place.txt')
+    parser.add_argument('-s', '--server_ip', help='Input server ip address', default='localhost')
+    parser.add_argument('-p', '--port', help='Input port number', default='50201')
+    parser.add_argument('-m', '--mode', help='Input mode to run the test local or cloud', default='cloud')
+    parser.add_argument('-d', '--outputdir', help='variable', default=workspace)
+    
+    args = parser.parse_args()
+    
+    server_ip = args.server_ip   
+
+    time = str(datetime.now())
+    tmp = time.split(' ')
+    time = tmp[0]+ '-' + tmp[1].split('.')[0]
+    time = time.replace(':', '-')
+    
+    runtestlogfile = args.outputdir + '\\logs\\runtest' + time +'.log'
+    runtestlog = open(runtestlogfile, 'w')
+    runtestlog.write('==============================Started running test==============================\n')
+    
+    if args.mode=='local':
+        get_basic_info_ipmlocal(server_ip, runtestlog)
         
     runtests_and_collectlogs(args, runtestlog, workspace)
     

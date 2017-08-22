@@ -1,6 +1,6 @@
 import requests
 import json
-from ipmcloud_objs import parking_place, parking_block
+from ipmcloud_objs import parking_place, parking_block, parking_slot
 from libs import connect_db
 
 
@@ -49,10 +49,10 @@ def create_parking_block(serverIp, port, number, placeId, blockName, unicode, **
         try:
             r = requests.post(createParkingBlockURL, data=json.dumps(data), headers=headers)
         except ValueError:
-            print 'Cannot create parking place via api. Status code is: ', r.status_code
+            print 'Cannot create parking block via api. Status code is: ', r.status_code
             
         if r.status_code!=200:
-            print 'Cannot create parking place via api. Status code is: ', r.status_code
+            print 'Cannot create parking block via api. Status code is: ', r.status_code
         else:
             print 'One parking block is created successful'
         blockList.append(parkingBlock)
@@ -64,7 +64,7 @@ def create_parking_slot(serverIp, port, number, placeId, blockId, slotName, tagI
     
     slotList = []
     headers = {"content-type": "application/json"}    
-    createParkingBlockURL = 'http://' + serverIp + ':' + port + '/admin/createParkingSlot'
+    createParkingSlotkURL = 'http://' + serverIp + ':' + port + '/admin/createParkingSlot'
     count = 0
     while count<number:
         name = slotName
@@ -73,5 +73,20 @@ def create_parking_slot(serverIp, port, number, placeId, blockId, slotName, tagI
         name = name + str(count)
         tag = tag + str(count)
         uni = uni + str(count)
+        parkingSlot = parking_slot(placeId, blockId, name, tag, uni, **kwargs)
+        data = {'placeId': parkingSlot.placeId, 'blockId': parkingSlot.blockId, 'slotName': parkingSlot.name, 'tagId': parkingSlot.tagId, 'unicode': parkingSlot.unicode,
+                'availability': parkingSlot.availability, 'createdBy': parkingSlot.createdBy}
         
+        try:
+            r = requests.post(createParkingSlotkURL, data=json.dumps(data), headers=headers)
+        except ValueError:
+            print 'Cannot create parking slot via api. Status code is: ', r.status_code
+            
+        if r.status_code!=200:
+            print 'Cannot create parking slot via api. Status code is: ', r.status_code
+        else:
+            print 'One parking slot is created successful'
+        
+        slotList.append(parkingSlot)    
+    return slotList
         

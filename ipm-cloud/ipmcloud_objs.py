@@ -33,7 +33,7 @@ class parking_slot(object):
         self.id = None
         self.placeId = placeId
         self.blockId = blockId
-        self.slotName = slotName
+        self.name = slotName
         self.tagId = tagId
         self.unicode = unicode
         self.availability = kwargs.get('availability', 1)

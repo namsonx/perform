@@ -179,7 +179,6 @@ def random_booking_and_reconcile(workspace, serverIp, port):
                     t1_status.append(t1.isAlive())                
                 for t2 in t2_list:
                     t2_status.append(t2.isAlive())
-                print 'Debug: ', t1_status
                 
                 if (True in t1_status) or (True in t2_status):
                     continue

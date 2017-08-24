@@ -7,6 +7,7 @@ Library         ../ipm-cloud/ipm_libs.py
 ${workspace}
 ${server_ip}
 ${port}
+${parkingPlace}
 
 *** Keywords ***
 Pre Setup
@@ -14,17 +15,19 @@ Pre Setup
 	#delete_all_booking    ${server_ip}     ${2}
 
 *** Test Cases ***
-#Test Creating Parking Place
-#    [Tags]
-#    create_parking_place	 ${server_ip}	 ${port}	 auto-test	   auto001
-#    sleep   10
+Test Creating Parking Place
+    [Tags]
+    ${parkingPlace} =    create_parking_place	 ${server_ip}	 ${port}	 auto-test	   auto001
+    Log    ${parkingPlace.id}
+    Log	   ${parkingPlace.name}
+    sleep   10
     
-#Test Creating Parking Block
-#	[Tags]
-#	create_parking_block	 ${server_ip}	 ${port}     ${3} 	 ${123}     autoBlock     blk	  solutionType = ${2}
-#	sleep   10
-	
-Test Deleting Parking Block
+Test Creating Parking Block
 	[Tags]
-	delete_parking_place	 ${server_ip}     ${96}
+	create_parking_block	 ${server_ip}	 ${port}     ${2} 	 ${parkingPlace.id}     autoBlock     blk
 	sleep   10
+	
+#Test Creating Parking Slot
+#	[Tags]
+#	create_parking_slot	   ${server_ip}     ${port}	 sensor	  ${62}	   ${129}    ${289}     noneed     noneed    slot0
+#	sleep   10

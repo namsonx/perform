@@ -1,6 +1,6 @@
 import requests
 import json
-from ipmcloud_objs import parking_place, parking_block, parking_slot
+from ipmcloud_objs import parking_place, parking_block, parking_slot, sensor_tagId
 from libs import connect_db
 
 
@@ -21,6 +21,10 @@ def create_parking_place(serverIp, port, placeName, unicode, **kwargs):
         print 'Cannot create parking place via api. Status code is: ', r.status_code
     else:
         print 'One parking place is created successful'
+        parkingPlace.id = parkingPlace.get_place_id(serverIp = serverIp)
+        print 'parking place ID is: %s', parkingPlace.id
+    
+    return parkingPlace
     
 def delete_parking_place(serverIp, placeId):
     
@@ -60,18 +64,30 @@ def create_parking_block(serverIp, port, number, placeId, blockName, unicode, **
         
     return blockList
 
-def create_parking_slot(serverIp, port, number, placeId, blockId, slotName, tagId, unicode, **kwargs):
+def create_parking_slot(serverIp, port,type ,number, placeId, blockId, slotName, tagId, unicode, **kwargs):
     
     slotList = []
+    if type=='sensor':
+        sensor = sensor_tagId()
+        numberSensor = len(sensor.tagList)
+        if number>numberSensor:
+            print 'Will create %s slots instead of %s due to just %s sensor tagId in the sensor object', numberSensor, number, numberSensor
+            number = numberSensor    
+    
     headers = {"content-type": "application/json"}    
     createParkingSlotkURL = 'http://' + serverIp + ':' + port + '/admin/createParkingSlot'
     count = 0
     while count<number:
-        name = slotName
-        tag = tagId
+        
+        if type=='sensor':
+            tag = sensor.tagList[count]
+            name = 'S' + tag
+        else:
+            tag = tagId
+            tag = tag + str(count)
+            name = slotName
+            name = name + str(count)
         uni = unicode
-        name = name + str(count)
-        tag = tag + str(count)
         uni = uni + str(count)
         parkingSlot = parking_slot(placeId, blockId, name, tag, uni, **kwargs)
         data = {'placeId': parkingSlot.placeId, 'blockId': parkingSlot.blockId, 'slotName': parkingSlot.name, 'tagId': parkingSlot.tagId, 'unicode': parkingSlot.unicode,
@@ -88,5 +104,6 @@ def create_parking_slot(serverIp, port, number, placeId, blockId, slotName, tagI
             print 'One parking slot is created successful'
         
         slotList.append(parkingSlot)    
+        count = count+1
     return slotList
         

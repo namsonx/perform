@@ -71,7 +71,7 @@ def main():
     
     parser = argparse.ArgumentParser()
     parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\create_parking_place.txt')
-    parser.add_argument('-s', '--server_ip', help='Input server ip address', default='localhost')
+    parser.add_argument('-s', '--server_ip', help='Input server ip address', default='192.168.0.223')
     parser.add_argument('-p', '--port', help='Input port number', default='50201')
     parser.add_argument('-m', '--mode', help='Input mode to run the test local or cloud', default='cloud')
     parser.add_argument('-d', '--outputdir', help='variable', default=workspace)

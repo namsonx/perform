@@ -15,19 +15,19 @@ Pre Setup
 	#delete_all_booking    ${server_ip}     ${2}
 
 *** Test Cases ***
-Test Creating Parking Place
-    [Tags]
-    ${parkingPlace} =    create_parking_place	 ${server_ip}	 ${port}	 auto-test	   auto001
-    Log    ${parkingPlace.id}
-    Log	   ${parkingPlace.name}
-    sleep   10
+#Test Creating Parking Place
+#    [Tags]
+#    ${parkingPlace} =    create_parking_place	 ${server_ip}	 ${port}	 auto-test	   auto001
+#    Log    ${parkingPlace.id}
+#    Log	   ${parkingPlace.name}
+#    sleep   10
     
-Test Creating Parking Block
-	[Tags]
-	create_parking_block	 ${server_ip}	 ${port}     ${2} 	 ${parkingPlace.id}     autoBlock     blk
-	sleep   10
-	
-#Test Creating Parking Slot
+#Test Creating Parking Block
 #	[Tags]
-#	create_parking_slot	   ${server_ip}     ${port}	 sensor	  ${62}	   ${129}    ${289}     noneed     noneed    slot0
+#	create_parking_block	 ${server_ip}	 ${port}     ${2} 	 ${parkingPlace.id}     autoBlock     blk
 #	sleep   10
+	
+Test Creating Parking Slot
+	[Tags]
+	create_parking_slot	   ${server_ip}     ${port}	  non-sensor    ${100}	   ${129}    ${291}     testSlot     200    slot0
+	sleep   10

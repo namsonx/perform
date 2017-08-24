@@ -1,0 +1,19 @@
+*** Settings ***
+Suite setup     Pre Setup
+Library			../ipm-cloud/UI/ipm_ui_libs.py
+Library         ../perform.py
+
+*** Variables ***
+${workspace}
+${server_ip}
+${port}
+
+*** Keywords ***
+Pre Setup
+	Setup
+
+*** Test Cases ***
+Test login Ui Ipm-cloud
+    [Tags]
+	${driver} =    open_page_and_login	   anand	 anand
+	Title Should Be	    ${driver.title}      DashBoard | IPM 1.0

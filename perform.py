@@ -152,7 +152,7 @@ def random_booking_and_reconcile(workspace, serverIp, port):
         print 'location is: ', loc
 
     count = 0
-    while count<1000:
+    while count<20:
         '''
         location = random.choice(loc_list)
         dest = random.choice(dests)
@@ -172,18 +172,18 @@ def random_booking_and_reconcile(workspace, serverIp, port):
             t2 = Thread(target=booking_and_reconcile_simulate, args=(veh, 1, serverIp, port, 'exit', location.locationId))
             t2.start()
             t2_list.append(t2)
-        while True:
-            t1_status = []
-            t2_status =[]
-            for t1 in t1_list:
-                t1_status.append(t1.isAlive())                
-            for t2 in t2_list:
-                t2_status.append(t2.isAlive())
-            print 'Debug: ', t1_status
-            
-            if (True in t1_status) or (True in t2_status):
-                continue
-            break
+            while True:
+                t1_status = []
+                t2_status =[]
+                for t1 in t1_list:
+                    t1_status.append(t1.isAlive())                
+                for t2 in t2_list:
+                    t2_status.append(t2.isAlive())
+                print 'Debug: ', t1_status
+                
+                if (True in t1_status) or (True in t2_status):
+                    continue
+                break
         
         count = count + 1
          

@@ -9,8 +9,12 @@ import robot
 
 def runtests_and_collectlogs(args, runtestlog, workspace):
     runtestlog.write('======================Starting robot running======================\n')
-    logdir = args.outputdir + '\\logs'
     testsuite = args.testsuite
+    suitename = testsuite.split('\\')[-1]
+    testfolder = suitename.split('.')[0]
+    logdir = args.outputdir + '\\logs\\' + testfolder
+    if not os.path.exists(logdir):
+        os.makedirs(logdir)
     
     try:
         '''
@@ -70,7 +74,7 @@ def main():
     workspace = workspace.strip(' \n\t')
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\random_booking.txt')
+    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\ipm_ui_login.txt')
     parser.add_argument('-s', '--server_ip', help='Input server ip address', default='192.168.0.229')
     parser.add_argument('-p', '--port', help='Input port number', default='50201')
     parser.add_argument('-m', '--mode', help='Input mode to run the test local or cloud', default='cloud')

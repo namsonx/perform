@@ -25,7 +25,18 @@ def create_parking_place(serverIp, port, placeName, unicode, **kwargs):
         print 'parking place ID is: %s', parkingPlace.id
     
     return parkingPlace
-    
+
+def get_parking_place_info(serverIp, placeName, **kwargs):
+    sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
+    x = sqlConn.cursor()
+    query = 'SELECT id, lang, lat, unicode, pass_rule, auto_exit FROM sm_ipm_park_place WHERE place_name =\' %s\'' %placeName
+    x.execute(query)
+    info = x.fetchone()
+    sqlConn.close()
+    print 'place infor: ', info
+    parkingPlace = parking_place(placeName=placeName, unicode=info[3], )
+        
+
 def delete_parking_place(serverIp, placeId):
     
     sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
@@ -106,4 +117,12 @@ def create_parking_slot(serverIp, port,type ,number, placeId, blockId, slotName,
         slotList.append(parkingSlot)    
         count = count+1
     return slotList
+
+def get_number_of_parking_place(serverIp):
+    
+    sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
+    x = sqlConn.cursor()
+    x.execute('''SELECT COUNT(*) FROM sm_ipm_park_place''')
+    numOfPlace = x.fetchone()[0]
+    return numOfPlace
         

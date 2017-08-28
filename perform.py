@@ -111,7 +111,7 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
         direction = dests[1]
         
     for veh in veh_list:
-        print 'Starting %s booking simulation for %s\n', direction, veh.vehicleNo
+        print 'Starting %s booking simulation for %s\n' %(direction, veh.vehicleNo)
         veh.direction = direction 
         recorded_vehicle(serverIp, veh.vehicleNo, veh.vehicleImage, cameraId, veh.direction)
         #sleep(1)
@@ -121,13 +121,13 @@ def booking_and_reconcile_simulate(veh_list, number, serverIp, port, mode, locat
                 print button_url
                 r = requests.post(button_url, headers=button_header)
             except:
-                print 'Post request %s failed with status code: %s', (button_url, r.status_code)
+                print 'Post request %s failed with status code: %s' %(button_url, r.status_code)
         if dio_pin!='none':
             try:
                 print barrie_url
                 r = requests.post(barrie_url, headers=button_header)
             except:
-                print 'Post request %s failed with status code: %s', (button_url, r.status_code)
+                print 'Post request %s failed with status code: %s' %(button_url, r.status_code)
         sleep(random.randint(10,20))
         i = i+1
         if i==number:

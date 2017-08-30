@@ -4,7 +4,10 @@ from libs import connect_db
 class parking_place(object):
     
     def __init__(self, placeName, unicode, **kwargs):
-        self.id = None
+        if kwargs.get('placeId'):
+            self.id = kwargs.get('placeId')
+        else:
+            self.id = None
         self.name = placeName
         self.unicode = unicode
         self.long = kwargs.get('longitude', 77.66297310590744)
@@ -19,8 +22,8 @@ class parking_place(object):
         sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
         x = sqlConn.cursor()
         x.execute('''SELECT id FROM sm_ipm_park_place WHERE place_name = %s AND unicode = %s''', (self.name, self.unicode))
-        id = x.fetchall()
-        self.id = id[0][0]
+        placeId = x.fetchone()
+        self.id = placeId[0]
         sqlConn.close()
         return self.id
     
@@ -33,7 +36,7 @@ class parking_block(object):
         self.unicode = unicode
         self.availability = kwargs.get('availability', 0)
         self.createdBy = kwargs.get('createdBy', 'Auto')
-        self.parkGuidanceURL = kwargs.get('parkGuidanceURL', ' ')
+        self.parkGuidanceURL = kwargs.get('parkGuidanceURL', '')
         self.parkFor = kwargs.get('parkFor', 4)
         self.solutionType = kwargs.get('solutionType', 2)
         
@@ -41,8 +44,8 @@ class parking_block(object):
         sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
         x = sqlConn.cursor()
         x.execute('''SELECT id FROM sm_ipm_park_block WHERE block_name = %s AND unicode = %s''', (self.name, self.unicode))
-        id = x.fetchall()
-        self.id = id[0][0]
+        blockId = x.fetchone()
+        self.id = blockId[0]
         sqlConn.close()
         return self.id
         
@@ -62,8 +65,8 @@ class parking_slot(object):
         sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
         x = sqlConn.cursor()
         x.execute('''SELECT id FROM sm_ipm_park_slot WHERE slot_name = %s AND unicode = %s''', (self.name, self.unicode))
-        id = x.fetchall()
-        self.id = id[0][0]
+        slotId = x.fetchone()
+        self.id = slotId[0]
         sqlConn.close()
         return self.id
         

@@ -26,15 +26,59 @@ def create_parking_place(serverIp, port, placeName, unicode, **kwargs):
     
     return parkingPlace
 
-def get_parking_place_info(serverIp, placeName, **kwargs):
+def get_parking_place_info(serverIp, placeName):
     sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
     x = sqlConn.cursor()
-    query = 'SELECT id, lang, lat, unicode, pass_rule, auto_exit FROM sm_ipm_park_place WHERE place_name =\' %s\'' %placeName
+    query = 'SELECT id, lang, lat, unicode, pass_rule, auto_exit FROM sm_ipm_park_place WHERE place_name =\'%s\'' %placeName
     x.execute(query)
     info = x.fetchone()
     sqlConn.close()
-    print 'place infor: ', info
-    parkingPlace = parking_place(placeName=placeName, unicode=info[3], )
+    print 'place info: ', info
+    parkingPlace = parking_place(placeName=placeName, unicode=info[3], placeId=info[0], longitude=info[1], latitude=info[2], passRuleName=info[4], autoExit=info[5])
+    return parkingPlace
+
+def update_parking_place(serverIp, port, placeName, **kwargs):
+    
+    parkingPlace = get_parking_place_info(serverIp, placeName)
+    if kwargs.get('autoExit'):
+        print 'Updating for autoExit'
+        parkingPlace.autoExit = kwargs.get('autoExit')
+    if kwargs.get('availability'):
+        print 'Updating for availability'
+        parkingPlace.availability = kwargs.get('availability')
+    if kwargs.get('longitude'):
+        print 'Updating for longitude'
+        parkingPlace.long = kwargs.get('longitude')
+    if kwargs.get('latitude'):
+        print 'Updating for latitude'
+        parkingPlace.lat = kwargs.get('latitude')
+    if kwargs.get('placeName'):
+        print 'Updating for placeName'
+        parkingPlace.name = kwargs.get('placeName')
+    if kwargs.get('ruleName'):
+        print 'Updating for ruleName'
+        parkingPlace.passRuleName = kwargs.get('ruleName')
+    if kwargs.get('unicode'):
+        print 'Updating for unicode'
+        parkingPlace.unicode = kwargs.get('unicode')
+    
+    headers = {"content-type": "application/json"}
+    data = {"placeName": parkingPlace.name, "unicode": parkingPlace.unicode, "autoExit": parkingPlace.autoExit, "availability": parkingPlace.availability,
+             "updatedBy": 'Auto', "lang": parkingPlace.long, "lat": parkingPlace.lat, "ruleName": parkingPlace.passRuleName, "placeId": parkingPlace.id}
+    
+    print 'data: ', data
+    print 'json data: ', json.dumps(data)
+    updateParkingPlaceURL = 'http://' + serverIp + ':' + port + '/admin/updateParkingPlace'
+    try:
+        r = requests.put(updateParkingPlaceURL, data=json.dumps(data), headers=headers)
+    except ValueError:
+        raise ValueError('Cannot update parking place via api. Status code is: ', r.status_code)
+        
+    if r.status_code!=200:
+        raise ValueError('Cannot update parking place via api. Status code is: ', r.status_code)
+    else:
+        print 'One parking place is updated successful'
+          
         
 
 def delete_parking_place(serverIp, placeId):

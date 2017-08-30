@@ -1,5 +1,6 @@
 *** Settings ***
 Suite setup     Pre Setup
+Suite Teardown     Post Setup
 Library			../ipm-cloud/UI/ipm_ui_libs.py
 Library         ../perform.py
 Library         ../ipm-cloud/ipm_libs.py
@@ -13,13 +14,18 @@ ${port}
 Pre Setup
 	Setup
 
+Post Setup
+	Setup
+
 *** Test Cases ***
 Test login And Check Parking Place Management
     [Tags]
 	${driver} =    open_page_and_login	   anand	 anand
 	Title Should Be	    ${driver}      DashBoard | IPM 1.0	
 	open_parking_place	   ${server_ip}    ${driver}
+	close_driver_session     ${driver}
 	
 Test Update Pass Rule For parking Place
 	[Tags]
-	get_parking_place_info     ${server_ip}     autotest
+	update_parking_place     ${server_ip}    ${port}     auto-test     autoExit=N
+	

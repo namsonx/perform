@@ -5,7 +5,7 @@ from ipm_libs import get_number_of_parking_place
 
 
 
-def open_page_and_login(username, passwd, url='http://192.168.0.229:50202'):
+def open_page_and_login(username, passwd, url='http://192.168.0.223:50202'):
     
     driver = webdriver.Firefox()
     driver.implicitly_wait(30)
@@ -30,7 +30,7 @@ def open_page_and_login(username, passwd, url='http://192.168.0.229:50202'):
     return driver
 
 def open_parking_place(serverIp, driver):
-        
+
     driver.find_element_by_css_selector('a[ng-click="showInnerMenu(2)"]').click()
     sleep(2)
     driver.find_element_by_css_selector('a[ui-sref="dashBoard.manageParkingPlace"]').click()
@@ -47,3 +47,6 @@ def title_should_be(driver, title):
         print 'Title is matched. Test successes'
     else:
         raise ValueError('The title is not matching')
+    
+def close_driver_session(driver):
+    driver.close()

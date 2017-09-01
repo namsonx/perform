@@ -108,17 +108,22 @@ def delete_tenant_ui(serverIp, uiport, port, placeName, tenantName):
     driver = view_tenant_management(serverIp, uiport, placeName)
     numOfTenant = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
     print 'numOfTenant is: ', numOfTenant
+    count=0
     i=1
     while i<=numOfTenant:
         xpathName = '//table[@class="table table-hover"]/tbody/tr[%s]/td/div[%s]/span/b' %(i, 1)
         tena = driver.find_elements_by_xpath(xpathName)
         if tenantName==tena[0].text:
             print 'Started viewing tenant prices'
+            count = count+1
             xpathDelete = '//table[@class="table table-hover"]/tbody/tr[%s]/td/div[%s]/a' %(i, 6)
             deleteTenant = driver.find_elements_by_xpath(xpathDelete)
             deleteTenant[0].click()
             sleep(2)
         i = i+1
+    if count==0:
+        errMessage = 'There is no tenant %s in parking place %s' %(tenantName, placeName)
+        raise ValueError(errMessage)
     tenantNameList = []    
     tenantList = get_all_tenant_of_place(serverIp, port, placeName)
     for tenant in tenantList:

@@ -53,5 +53,5 @@ Test Delete Vehicles In Tenant UI
 	[Tags]
 	${tenantId} =    ipm_libs.get_tenant_id     ${server_ip}      ${placeName}      tenant02
 	${vehList} =    ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
-	delete_veh_in_tenant_ui     ${server_ip}     ${port}     ${uiport}    ${placeName}      tenant01      ${4}
+	delete_veh_in_tenant_ui     ${server_ip}     ${port}     ${uiport}    ${placeName}      tenant02      ${3}
 	

@@ -10,9 +10,11 @@ def open_page_and_login(serverIp, port='50202', username = 'anand', passwd = 'an
     
     url = 'http://' + serverIp + ':' + port
     #driver = webdriver.Firefox()
-    options = webdriver.ChromeOptions()
-    options.add_argument("--start-maximized")
-    driver = webdriver.Chrome(chrome_options=options)
+    #options = webdriver.ChromeOptions()
+    #options.add_argument("--start-maximized")
+    driver = webdriver.Chrome()
+    driver.set_window_size(1024, 600)
+    driver.maximize_window()
     
     driver.implicitly_wait(30)
     

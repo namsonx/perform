@@ -43,13 +43,15 @@ Post Setup
 #	edit_tenant_name_via_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant04      tenant05
 #	sleep    3
 #	
-#Test Adding Vehicles To Tenant UI
-#	[Tags]
-#	${vehList} =     create_vehicle_list_for_tenant     ${3}
-#	add_vehicle_to_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant01      ${vehList}
-#	sleep    3
+Test Adding Vehicles To Tenant UI
+	[Tags]
+	${vehList} =     create_vehicle_list_for_tenant     ${3}
+	add_vehicle_to_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant02      ${vehList}
+	sleep    3
 	
 Test Delete Vehicles In Tenant UI
 	[Tags]
+	${tenantId} =    get_tenant_id     ${server_ip}      ${placeName}      tenant02
+	${vehList} =    get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
 	delete_veh_in_tenant_ui     ${server_ip}     ${uiport}    ${placeName}      tenant02      ${4}
 	

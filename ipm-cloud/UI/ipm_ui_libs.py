@@ -9,7 +9,8 @@ from ipm_libs import get_number_of_parking_place, get_parking_place_info, get_te
 def open_page_and_login(serverIp, port='50202', username = 'anand', passwd = 'anand'):
     
     url = 'http://' + serverIp + ':' + port
-    driver = webdriver.Firefox()
+    #driver = webdriver.Firefox()
+    driver = webdriver.Chrome()
     driver.implicitly_wait(30)
     
     driver.get(url)
@@ -227,8 +228,9 @@ def add_vehicle_to_tenant_ui(serverIp, uiport, port, placeName, tenantName, vehL
     sleep(3)
     driver.close()
     
-def delete_veh_in_tenant_ui(serverIp, uiport, placeName, tenantName, number):
-    
+def delete_veh_in_tenant_ui(serverIp, port, uiport, placeName, tenantName, number):
+    tenantId = get_tenant_id(serverIp, placeName, tenantName)
+    vehList = get_all_vehicle_of_tenant(serverIp, port, tenantId)
     driver = view_tenant_management(serverIp, uiport, placeName)
     numOfTenant = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
     print 'numOfTenant is: ', numOfTenant
@@ -245,7 +247,6 @@ def delete_veh_in_tenant_ui(serverIp, uiport, placeName, tenantName, number):
             sleep(2)
             count = 1
             while count<=number:
-                xpathVeh = '//table[@class="table table-hover"]/tbody/tr[1]/td/div[%s]' %4
                 driver.find_element_by_css_selector('button[ng-click="deleteVehicle(vehicle,$item)"]').click()
                 count = count + 1
                 sleep(2)

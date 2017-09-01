@@ -3,7 +3,7 @@ Suite setup     Pre Setup
 Suite Teardown     Post Setup
 Library			../ipm-cloud/UI/ipm_ui_libs.py
 Library         ../perform.py
-#Library         ../ipm-cloud/ipm_libs.py
+Library         ../ipm-cloud/ipm_libs.py
 
 *** Variables ***
 ${workspace}

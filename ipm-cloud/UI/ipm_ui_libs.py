@@ -117,7 +117,7 @@ def delete_tenant_ui(serverIp, uiport, port, placeName, tenantName):
             print 'Started viewing tenant prices'
             count = count+1
             xpathDelete = '//table[@class="table table-hover"]/tbody/tr[%s]/td/div[%s]/button' %(i, 6)
-            deleteTenant = driver.find_elements_by_xpath(xpathDelete).click()
+            deleteTenant = driver.find_elements_by_xpath(xpathDelete)
             deleteTenant[0].click()
             sleep(2)
         i = i+1

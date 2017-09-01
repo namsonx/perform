@@ -237,6 +237,9 @@ def add_vehicle_to_tenant_ui(serverIp, uiport, port, placeName, tenantName, vehL
 def delete_veh_in_tenant_ui(serverIp, port, uiport, placeName, tenantName, number):
     tenantId = get_tenant_id(serverIp, placeName, tenantName)
     vehList = get_all_vehicle_of_tenant(serverIp, port, tenantId)
+    if number>len(vehList):
+        errMessage = 'The number of vehicle going to delete (%s) are greater than total vehicles in tenant (%s)' %(number, len(vehList))
+        raise ValueError(errMessage)
     driver = view_tenant_management(serverIp, uiport, placeName)
     numOfTenant = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
     print 'numOfTenant is: ', numOfTenant

@@ -1,0 +1,55 @@
+*** Settings ***
+Suite setup     Pre Setup
+Suite Teardown     Post Setup
+Library			../ipm-cloud/UI/ipm_ui_libs.py
+Library         ../perform.py
+Library         ../ipm-cloud/ipm_libs.py
+
+*** Variables ***
+${workspace}
+${server_ip}
+${port}
+${uiport}
+${placeName}     tenant-test
+
+*** Keywords ***
+Pre Setup
+	Setup
+#    create_parking_place	 ${server_ip}	 ${port}	 ${placeName}	   tenant001     parkType=${2}      autoExit=N
+
+Post Setup
+	Setup
+
+*** Test Cases ***
+#Test login And Check Tenant Management Page
+#    [Tags]
+#	${driver} =    view_tenant_management     ${server_ip}     ${uiport}     ${placeName}
+#	close_driver_session     ${driver}
+#	sleep    3
+#	
+#Test Create New Tenant Via UI
+#	[Tags]
+#	${driver} =     create_new_tenant_ui     ${server_ip}     ${uiport}     ${placeName}      tenant04
+#	close_driver_session     ${driver}
+#	sleep    3
+#	
+#Test Show Prices Of Tenant Via UI
+#	[Tags]
+#	show_tenant_prices     ${server_ip}     ${uiport}     ${placeName}      tenant03
+#	sleep    3
+#	
+#Test Edit Name Of Tenant Via UI
+#	[Tags]
+#	edit_tenant_name_via_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant04      tenant05
+#	sleep    3
+#	
+#Test Adding Vehicles To Tenant UI
+#	[Tags]
+#	${vehList} =     create_vehicle_list_for_tenant     ${3}
+#	add_vehicle_to_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant01      ${vehList}
+#	sleep    3
+	
+Test Delete Vehicles In Tenant UI
+	[Tags]
+	delete_veh_in_tenant_ui     ${server_ip}     ${uiport}    ${placeName}      tenant02      ${4}
+	

@@ -1,6 +1,7 @@
 import requests
 import json
-from ipmcloud_objs import parking_place, parking_block, parking_slot, sensor_tagId
+import random
+from ipmcloud_objs import parking_place, parking_block, parking_slot, sensor_tagId, vehicleTenant
 from libs import connect_db
 
 
@@ -169,4 +170,61 @@ def get_number_of_parking_place(serverIp):
     x.execute('''SELECT COUNT(*) FROM sm_ipm_park_place''')
     numOfPlace = x.fetchone()[0]
     return numOfPlace
+
+def create_vehicle_list_for_tenant(number):
+    vehList = []
+    vehTypes = [2,3,4,6]
+    i = 0
+    while i<number:
+        vehType = random.choice(vehTypes)
+        vehNo = 'KA' + str(random.randint(0, 99)) + 'MH' + str(random.randint(1000, 9999)) 
+        veh = vehicleTenant(vehNo, vehType)
+        vehList.append(veh)
+        i=i+1
         
+    return vehList
+
+def get_tenant_id(serverIp, placeName, tenantName):
+    parkingPlace = get_parking_place_info(serverIp, placeName)
+    sqlConn = connect_db(host=serverIp, user='root', password='SmartCity@123', db='ipmtest')
+    x = sqlConn.cursor()
+    queryCmd = 'SELECT id FROM sm_ipm_place_tenant WHERE place_id = %s AND tenant_name = \'%s\'' %(parkingPlace.id, tenantName)
+    x.execute(queryCmd)
+    tenantId = x.fetchone()[0]
+    return tenantId
+
+def get_all_tenant_of_place(serverIp, port, placeName):
+    parkingPlace = get_parking_place_info(serverIp, placeName)
+    tenantUrl = 'http://' + serverIp + ':' + port + '/tenantManagment/tenants/' + str(parkingPlace.id)
+    header = {'Content-Type': 'application/json'}
+    try:
+        r = requests.get(tenantUrl, headers=header)
+    except ValueError:
+        print 'Cannot get tenants of place via api: %s. Status code is: %s' %(tenantUrl, r.status_code)
+        
+    if r.status_code!=200:
+        errMessage = 'Cannot get tenants of place via api: %s. Status code is: %s' %(tenantUrl, r.status_code)
+        raise ValueError(errMessage)
+    tenantList = r.json()['data']
+    print 'Tenant list is: ', tenantList
+    return tenantList
+    
+
+def get_all_vehicle_of_tenant(serverIp, port, tenantId):
+
+    vehTenantUrl = 'http://' + serverIp + ':' + port + '/tenantManagment/vehicles/' + str(tenantId)
+    header = {'Content-Type': 'application/json'}
+    try:
+        r = requests.get(vehTenantUrl, headers=header)
+    except ValueError:
+        print 'Cannot get vehicles of tenant via api: %s. Status code is: %s' %(vehTenantUrl, r.status_code)
+        
+    if r.status_code!=200:
+        errMessage = 'Cannot get vehicles of tenant via api: %s. Status code is: %s' %(vehTenantUrl, r.status_code)
+        raise ValueError(errMessage)
+    
+    vehsTenant = r.json()['data']
+    for veh in vehsTenant:
+        print 'Vehicle: ', veh    
+    return vehsTenant
+

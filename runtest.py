@@ -31,6 +31,7 @@ def runtests_and_collectlogs(args, runtestlog, workspace):
     variable = []
     variable.append('server_ip:' + args.server_ip)
     variable.append('port:' + args.port)
+    variable.append('uiport:' + args.uiport)
     variable.append('workspace:' + workspace)
     
     status = robot.run(testsuite, variable=variable, outputdir=logdir)
@@ -74,9 +75,10 @@ def main():
     workspace = workspace.strip(' \n\t')
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\ipm_ui_login.txt')
+    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\tenant_testsuite.txt')
     parser.add_argument('-s', '--server_ip', help='Input server ip address', default='192.168.0.223')
     parser.add_argument('-p', '--port', help='Input port number', default='50201')
+    parser.add_argument('-uip', '--uiport', help='Input UI port number', default='50202')
     parser.add_argument('-m', '--mode', help='Input mode to run the test local or cloud', default='cloud')
     parser.add_argument('-d', '--outputdir', help='variable', default=workspace)
     

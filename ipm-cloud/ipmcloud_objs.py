@@ -79,9 +79,10 @@ class tenant(object):
         
 class vehicleTenant(object):
     
-    def __init__(self, tenantId, vehicleNo, vehicleType):
+    def __init__(self, vehicleNo, vehicleType, **kwargs):
         self.id = None
-        self.tenantId = tenantId
+        if kwargs.get('tenantId'):
+            self.tenantId = kwargs.get('tenantId')
         self.vehicleNo = vehicleNo
         self.vehicleType = vehicleType
         

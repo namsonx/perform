@@ -58,7 +58,7 @@ Test Delete Vehicles In Tenant UI
 	${vehListAfter} =     ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
 	${numBefore} =    Get Length     ${vehListBefore}
 	${numAfter} =    Get Length     ${vehListAfter}
-	Should Be Equal     ${numBefore} - ${3}     ${numAfter}
+	Should Be Equal     ${numBefore-3}     ${numAfter}
 	sleep    2
 
 Test Delete Tenant Via UI

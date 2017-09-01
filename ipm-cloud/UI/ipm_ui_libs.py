@@ -180,6 +180,7 @@ def add_vehicle_to_tenant_ui(serverIp, uiport, port, placeName, tenantName, vehL
             xpathAddVeh = '//table[@class="table table-hover"]/tbody/tr[%s]/td/div[%s]/a' %(i, 4)
             addVeh = driver.find_elements_by_xpath(xpathAddVeh)
             addVeh[0].click()
+            sleep(2)
             for veh in vehList:
                 driver.find_element_by_css_selector('button[ng-click="createUpdateTenantVehicle(\'NEWVEHICLE\',tenantVehicleDetails)"]').click()
                 sleep(2)

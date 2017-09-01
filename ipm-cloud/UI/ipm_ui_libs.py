@@ -294,6 +294,9 @@ def delete_veh_in_tenant_ui(serverIp, port, uiport, placeName, tenantName, numbe
      
     driver.close()    
     
+def delete_parking_place_ui():
+    print 'Will implement later'    
+
 def title_should_be(driver, title):
     print driver.title
     if driver.title==title:

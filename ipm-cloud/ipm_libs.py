@@ -82,11 +82,12 @@ def update_parking_place(serverIp, port, placeName, **kwargs):
           
         
 
-def delete_parking_place(serverIp, placeId):
+def delete_parking_place(serverIp, placeName):
     
     sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
     x = sqlConn.cursor()
-    x.execute("""DELETE FROM sm_ipm_park_place WHERE id = %s""", placeId)
+    deleteQuery = 'DELETE FROM sm_ipm_park_place WHERE id = \'%s\'' %placeName
+    x.execute(deleteQuery)
     sqlConn.commit()
     sqlConn.close()        
     print 'Deleted parking successul'    

@@ -18,7 +18,7 @@ Pre Setup
 #    create_parking_place	 ${server_ip}	 ${port}	 ${placeName}	   tenant001     parkType=${2}      autoExit=N
 
 Post Setup
-	Setup
+	delete_parking_place     ${server_ip}      test
 
 *** Test Cases ***
 #Test login And Check Tenant Management Page

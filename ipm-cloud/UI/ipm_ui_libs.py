@@ -13,7 +13,7 @@ def open_page_and_login(serverIp, port='50202', username = 'anand', passwd = 'an
     #options = webdriver.ChromeOptions()
     #options.add_argument("--start-maximized")
     driver = webdriver.Chrome()
-    driver.set_window_size(1024, 600)
+    #driver.set_window_size(1920, 1080)
     driver.maximize_window()
     
     driver.implicitly_wait(30)

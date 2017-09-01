@@ -51,7 +51,7 @@ Test Adding Vehicles To Tenant UI
 	
 Test Delete Vehicles In Tenant UI
 	[Tags]
-	${tenantId} =    get_tenant_id     ${server_ip}      ${placeName}      tenant02
+	${tenantId} =    ipm_libs.get_tenant_id     ${server_ip}      ${placeName}      tenant02
 	${vehList} =    get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
 	delete_veh_in_tenant_ui     ${server_ip}     ${uiport}    ${placeName}      tenant02      ${4}
 	

@@ -181,7 +181,7 @@ def add_vehicle_to_tenant_ui(serverIp, uiport, port, placeName, tenantName, vehL
             addVeh = driver.find_elements_by_xpath(xpathAddVeh)
             addVeh[0].click()
             for veh in vehList:
-                driver.find_element_by_css_selector('button[title="add tenant vehicle"]').click()
+                driver.find_element_by_css_selector('button[ng-click="createUpdateTenantVehicle(\'NEWVEHICLE\',tenantVehicleDetails)"]').click()
                 sleep(2)
                 tenantVeh = driver.find_element_by_css_selector('input[ng-model="tenantVehicle.vehicleNumber"]')
                 tenantVeh.clear()

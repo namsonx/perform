@@ -31,7 +31,7 @@ def open_page_and_login(serverIp, port='50202', username = 'anand', passwd = 'an
     sleep(2)
     
     driver.find_element_by_id('submit-button').submit()
-    sleep(2)
+    sleep(5)
     title = driver.title
     print 'Title list is: ', title
     if title!='DashBoard | IPM 1.0':

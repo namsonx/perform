@@ -294,6 +294,27 @@ def delete_veh_in_tenant_ui(serverIp, port, uiport, placeName, tenantName, numbe
      
     driver.close()    
     
+def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName):
+    driver = open_parking_place(serverIp, uiport)
+    numOfPlaces = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
+    print 'The number of parking places is ', numOfPlaces
+    i=1
+    while i<numOfPlaces:
+        xpathName = '//table[@class="table table-hover"]/tbody/tr[%s]/td[1]/h5' %i
+        place = driver.find_elements_by_xpath(xpathName)
+        if place[0].text==placeName:
+            print 'Started reserving slots in parking place %s' %placeName
+            xpathReserve = '//table[@class="table table-hover"]/tbody/tr[%s]/td[6]/div/div[3]/button' %i
+            reserveSlot = driver.find_elements_by_xpath(xpathReserve)
+            reserveSlot[0].click()
+            sleep(2)
+            break
+        i=i+1
+    driver.find_element_by_css_selector('span[ng-click="$select.activate()"]').click()
+    sleep(2)
+    numOfTenant = len(driver.find_element_by_css_selector('li[class="ui-selecte-choices-group"]'))
+    print 'Number of tenants in place %s is %s ' %(placeName, numOfTenant)
+    
 def delete_parking_place_ui():
     print 'Will implement later'    
 

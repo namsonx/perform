@@ -43,25 +43,29 @@ Post Setup
 #	edit_tenant_name_via_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant04      tenant05
 #	sleep    3
 #	
-Test Adding Vehicles To Tenant UI
-	[Tags]
-	${vehList} =     create_vehicle_list_for_tenant     ${3}
-	add_vehicle_to_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant02      ${vehList}
-	sleep    3
-	
-Test Delete Vehicles In Tenant UI
-	[Tags]
-	${tenantId} =    ipm_libs.get_tenant_id     ${server_ip}      ${placeName}      tenant02
-	${vehListBefore} =    ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
-	delete_veh_in_tenant_ui     ${server_ip}     ${port}     ${uiport}    ${placeName}      tenant02      ${3}
-	sleep   3
-	${vehListAfter} =     ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
-	${numBefore} =    Get Length     ${vehListBefore}
-	${numAfter} =    Get Length     ${vehListAfter}
-	Should Be Equal     ${numBefore-3}     ${numAfter}
-	sleep    2
+#Test Adding Vehicles To Tenant UI
+#	[Tags]
+#	${vehList} =     create_vehicle_list_for_tenant     ${3}
+#	add_vehicle_to_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant02      ${vehList}
+#	sleep    3
+#	
+#Test Delete Vehicles In Tenant UI
+#	[Tags]
+#	${tenantId} =    ipm_libs.get_tenant_id     ${server_ip}      ${placeName}      tenant02
+#	${vehListBefore} =    ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
+#	delete_veh_in_tenant_ui     ${server_ip}     ${port}     ${uiport}    ${placeName}      tenant02      ${3}
+#	sleep   3
+#	${vehListAfter} =     ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
+#	${numBefore} =    Get Length     ${vehListBefore}
+#	${numAfter} =    Get Length     ${vehListAfter}
+#	Should Be Equal     ${numBefore-3}     ${numAfter}
+#	sleep    2
+#
+#Test Delete Tenant Via UI
+#	[Tags]
+#	delete_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant04
+#	sleep    3	
 
-Test Delete Tenant Via UI
+Test Reserve Slots Tenant UI
 	[Tags]
-	delete_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant04
-	sleep    3	
+	update_reserve_slot_ui     ${server_ip}     ${uiport}      ${placeName}      tenant02

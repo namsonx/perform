@@ -294,7 +294,7 @@ def delete_veh_in_tenant_ui(serverIp, port, uiport, placeName, tenantName, numbe
      
     driver.close()    
     
-def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName):
+def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName, numSlots):
     driver = open_parking_place(serverIp, uiport)
     numOfPlaces = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
     print 'The number of parking places is ', numOfPlaces
@@ -312,8 +312,24 @@ def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName):
         i=i+1
     driver.find_element_by_css_selector('span[ng-click="$select.activate()"]').click()
     sleep(2)
-    numOfTenant = len(driver.find_elements_by_xpath('//li[@class="ui-selecte-choices-group"]'))
+    numOfTenant = len(driver.find_elements_by_xpath('//li[@id="ui-select-choices-0"]/div/a'))
     print 'Number of tenants in place %s is %s ' %(placeName, numOfTenant)
+    xpathTenant = '//li[@id="ui-select-choices-0"]/div/a/div[text()="%s"]' % tenantName
+    tenaName = driver.find_elements_by_xpath(xpathTenant)
+    if not tenaName:
+        errMessage = 'There is no tenant with name %s in parking place %s' %(tenantName, placeName)
+        raise ValueError(errMessage)
+    tenaName[0].click()
+    sleep(2)
+    numReserveSlot = driver.find_element_by_css_selector('input[@ng-model="reserveDetails.reservedSlots"]')
+    numReserveSlot.clear()
+    sleep(1)
+    numReserveSlot.send_keys(numSlots)
+    sleep(1)
+    driver.find_element_by_css_selector('button[@ng-click="submitReservedSlot()"]').click()
+    sleep(2)
+    
+    driver.close()
     
 def delete_parking_place_ui():
     print 'Will implement later'    

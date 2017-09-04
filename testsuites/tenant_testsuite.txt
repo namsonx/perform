@@ -68,4 +68,4 @@ Post Setup
 
 Test Reserve Slots Tenant UI
 	[Tags]
-	update_reserve_slot_ui     ${server_ip}     ${uiport}      ${placeName}      tenant02
+	update_reserve_slot_ui     ${server_ip}     ${uiport}      ${placeName}      tenant02     ${3}

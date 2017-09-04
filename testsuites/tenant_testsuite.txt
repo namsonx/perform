@@ -17,6 +17,11 @@ ${tenantNamePrefix}     tenant0
 Pre Setup
 	Setup
     create_parking_place	 ${server_ip}	 ${port}	 ${placeName}	   tenant001     parkType=${2}      autoExit=N
+    sleep    1
+    ${placeId} =      get_parking_place_id     ${server_ip}      ${placeName}
+    create_parking_block      ${server_ip}	 ${port}     ${1}     ${placeId}      tenantBlock     blk000
+    ${blockId} =     get_block_id     ${server_ip}     ${placeId}     tenantBlock0
+    create_parking_slot     ${server_ip}	 ${port}     non-sensor     ${10}     ${placeId}      ${blockId}     Slot0     S00    slt00
 
 Post Setup
 	delete_parking_place_ui     ${server_ip}      ${uiport}      ${placeName}

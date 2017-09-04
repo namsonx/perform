@@ -38,6 +38,10 @@ def get_parking_place_info(serverIp, placeName):
     parkingPlace = parking_place(placeName=placeName, unicode=info[3], placeId=info[0], longitude=info[1], latitude=info[2], passRuleName=info[4], autoExit=info[5])
     return parkingPlace
 
+def get_parking_place_id(serverIp, placeName):
+    parkingPlace = get_parking_place_info(serverIp, placeName)
+    return parkingPlace.id
+
 def update_parking_place(serverIp, port, placeName, **kwargs):
     
     parkingPlace = get_parking_place_info(serverIp, placeName)
@@ -121,6 +125,14 @@ def create_parking_block(serverIp, port, number, placeId, blockName, unicode, **
         
     return blockList
 
+def get_block_id(serverIp, placeId, blockName):
+    sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
+    x = sqlConn.cursor()
+    sqlQuery = 'SELECT id FROM sm_ipm_park_block WHERE place_id =\'%s\' AND block_name = \'%s\'' %(placeId, blockName)
+    x.execute(sqlQuery)
+    blockId = x.fetchone()[0]
+    return blockId
+    
 def create_parking_slot(serverIp, port, slotType ,number, placeId, blockId, slotName, tagId, unicode, **kwargs):
     
     slotList = []

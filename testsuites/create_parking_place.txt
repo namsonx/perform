@@ -29,5 +29,5 @@ Pre Setup
 	
 Test Creating Parking Slot
 	[Tags]
-	create_parking_slot	   ${server_ip}     ${port}	  sensor    ${62}	   ${1}    ${2}     noneed     noneed    slot0
+	create_parking_slot	   ${server_ip}     ${port}	  sensor    ${10}	   ${135}    ${294}     Slot0     S00    slot0
 	sleep   10

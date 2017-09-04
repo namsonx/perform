@@ -86,7 +86,7 @@ def delete_parking_place(serverIp, placeName):
     
     sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
     x = sqlConn.cursor()
-    deleteQuery = 'DELETE FROM sm_ipm_park_place WHERE id = \'%s\'' %placeName
+    deleteQuery = 'DELETE FROM sm_ipm_park_place WHERE place_name = \'%s\'' %placeName
     x.execute(deleteQuery)
     sqlConn.commit()
     sqlConn.close()        
@@ -121,10 +121,10 @@ def create_parking_block(serverIp, port, number, placeId, blockName, unicode, **
         
     return blockList
 
-def create_parking_slot(serverIp, port,type ,number, placeId, blockId, slotName, tagId, unicode, **kwargs):
+def create_parking_slot(serverIp, port, slotType ,number, placeId, blockId, slotName, tagId, unicode, **kwargs):
     
     slotList = []
-    if type=='sensor':
+    if slotType=='sensor':
         sensor = sensor_tagId()
         numberSensor = len(sensor.tagList)
         if number>numberSensor:
@@ -136,7 +136,7 @@ def create_parking_slot(serverIp, port,type ,number, placeId, blockId, slotName,
     count = 0
     while count<number:
         
-        if type=='sensor':
+        if slotType=='sensor':
             tag = sensor.tagList[count]
             name = 'S' + tag
         else:

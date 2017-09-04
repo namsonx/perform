@@ -302,6 +302,7 @@ def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName):
     while i<numOfPlaces:
         xpathName = '//table[@class="table table-hover"]/tbody/tr[%s]/td[1]/h5' %i
         place = driver.find_elements_by_xpath(xpathName)
+        print 'Place name is ', place[0].text
         if place[0].text==placeName:
             print 'Started reserving slots in parking place %s' %placeName
             xpathReserve = '//table[@class="table table-hover"]/tbody/tr[%s]/td[6]/div/div[3]/button' %i

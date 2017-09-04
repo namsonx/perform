@@ -11,61 +11,63 @@ ${server_ip}
 ${port}
 ${uiport}
 ${placeName}     tenant-test
+${tenantNamePrefix}     tenant0
 
 *** Keywords ***
 Pre Setup
 	Setup
-#    create_parking_place	 ${server_ip}	 ${port}	 ${placeName}	   tenant001     parkType=${2}      autoExit=N
+    create_parking_place	 ${server_ip}	 ${port}	 ${placeName}	   tenant001     parkType=${2}      autoExit=N
 
 Post Setup
-	delete_parking_place     ${server_ip}      test
+	delete_parking_place_ui     ${server_ip}      ${uiport}      ${placeName}
 
 *** Test Cases ***
-#Test login And Check Tenant Management Page
-#    [Tags]
-#	${driver} =    view_tenant_management     ${server_ip}     ${uiport}     ${placeName}
-#	close_driver_session     ${driver}
-#	sleep    3
-#	
-#Test Create New Tenant Via UI
-#	[Tags]
-#	${driver} =     create_new_tenant_ui     ${server_ip}     ${uiport}     ${placeName}      tenant04
-#	close_driver_session     ${driver}
-#	sleep    3
-#	
-#Test Show Prices Of Tenant Via UI
-#	[Tags]
-#	show_tenant_prices     ${server_ip}     ${uiport}     ${placeName}      tenant03
-#	sleep    3
-#	
-#Test Edit Name Of Tenant Via UI
-#	[Tags]
-#	edit_tenant_name_via_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant04      tenant05
-#	sleep    3
-#	
-#Test Adding Vehicles To Tenant UI
-#	[Tags]
-#	${vehList} =     create_vehicle_list_for_tenant     ${3}
-#	add_vehicle_to_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant02      ${vehList}
-#	sleep    3
-#	
-#Test Delete Vehicles In Tenant UI
-#	[Tags]
-#	${tenantId} =    ipm_libs.get_tenant_id     ${server_ip}      ${placeName}      tenant02
-#	${vehListBefore} =    ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
-#	delete_veh_in_tenant_ui     ${server_ip}     ${port}     ${uiport}    ${placeName}      tenant02      ${3}
-#	sleep   3
-#	${vehListAfter} =     ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
-#	${numBefore} =    Get Length     ${vehListBefore}
-#	${numAfter} =    Get Length     ${vehListAfter}
-#	Should Be Equal     ${numBefore-3}     ${numAfter}
-#	sleep    2
-#
-#Test Delete Tenant Via UI
-#	[Tags]
-#	delete_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant04
-#	sleep    3	
+Test login And Check Tenant Management Page
+    [Tags]
+	${driver} =    view_tenant_management     ${server_ip}     ${uiport}     ${placeName}
+	close_driver_session     ${driver}
+	sleep    3
+	
+Test Create New Tenant Via UI
+	[Tags]
+	create_new_tenant_ui     ${server_ip}     ${uiport}     ${placeName}      ${tenantNamePrefix}     ${5}
+	sleep    3
+	
+Test Show Prices Of Tenant Via UI
+	[Tags]
+	show_tenant_prices     ${server_ip}     ${uiport}     ${placeName}      tenant03
+	sleep    3
+	
+Test Edit Name Of Tenant Via UI
+	[Tags]
+	edit_tenant_name_via_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant04      tenant14
+	sleep    3
+	
+Test Adding Vehicles To Tenant UI
+	[Tags]
+	${vehList} =     create_vehicle_list_for_tenant     ${5}
+	add_vehicle_to_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant02      ${vehList}
+	sleep    3
+	${vehList} =     create_vehicle_list_for_tenant     ${6}
+	add_vehicle_to_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant03      ${vehList}
+	sleep    3
+	
+Test Delete Vehicles In Tenant UI
+	[Tags]
+	${tenantId} =    ipm_libs.get_tenant_id     ${server_ip}      ${placeName}      tenant03
+	${vehListBefore} =    ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
+	delete_veh_in_tenant_ui     ${server_ip}     ${port}     ${uiport}    ${placeName}      tenant03      ${3}
+	sleep   3
+	${vehListAfter} =     ipm_libs.get_all_vehicle_of_tenant     ${server_ip}     ${port}      ${tenantId}
+	${numBefore} =    Get Length     ${vehListBefore}
+	${numAfter} =    Get Length     ${vehListAfter}
+	Should Be Equal     ${numBefore-3}     ${numAfter}
+	sleep    2
 
+Test Delete Tenant Via UI
+	[Tags]
+	delete_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant14
+	sleep    3	
 Test Reserve Slots Tenant UI
 	[Tags]
 	add_reserve_slot_ui     ${server_ip}     ${uiport}     ${port}      ${placeName}      tenant02     ${3}
@@ -83,3 +85,4 @@ Test Reserve Slots Tenant With Negative Number UI
 	add_reserve_slot_ui     ${server_ip}     ${uiport}     ${port}      ${placeName}      tenant02     ${-1}
 	${numReservedSlot} =      get_reserved_slot_of_tenant     ${server_ip}     ${port}      ${placeName}      tenant02
 	Should Not Be Equal     ${numReservedSlot}      ${-1}
+	

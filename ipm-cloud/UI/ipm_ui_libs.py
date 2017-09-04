@@ -2,8 +2,7 @@
 from selenium import webdriver
 from time import sleep
 from ipm_libs import get_number_of_parking_place, get_parking_place_info, get_tenant_id, get_all_vehicle_of_tenant,\
-                        get_all_tenant_of_place, get_tenant_info
-
+                        get_all_tenant_of_place
 
 
 def open_page_and_login(serverIp, port='50202', username = 'anand', passwd = 'anand'):
@@ -76,33 +75,36 @@ def view_tenant_management(serverIp, port, placeName):
     else:
         raise ValueError('Cannot open Manage Tenants page')
     
-def create_new_tenant_ui(serverIp, port, placeName, name):
+def create_new_tenant_ui(serverIp, port, placeName, namePrefix, howMany):
     driver = view_tenant_management(serverIp, port, placeName)
-    driver.find_element_by_css_selector('button[ng-click="createTenant(\'NEWTENANT\')"]').click()
-    sleep(2)
-    tenantName = driver.find_element_by_css_selector('input[ng-model="tenantDetails.tenantName"]')
-    tenantName.clear()
-    sleep(2)
-    tenantName.send_keys(name)
-    sleep(2)
-    driver.find_element_by_css_selector('button[ng-click="submitParkingTenant()"]').click()
-    sleep(2)
-    
-    numOfTenant = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
-    i=1
-    check = 0
-    while i<=numOfTenant:
-        xpath = '//table[@class="table table-hover"]/tbody/tr[%s]/td/div[%s]/span/b' %(i, 1)
-        tena = driver.find_elements_by_xpath(xpath)
-        print 'check is: ', tena[0].text
-        if name==tena[0].text:
-            check = check+1
-            break
-        i = i+1
-    if check==0:
-        raise ValueError('Cannot create new tenant via UI')
-    else:
-        return driver
+    count=0
+    while count<howMany:
+        name = namePrefix + str(count)
+        driver.find_element_by_css_selector('button[ng-click="createTenant(\'NEWTENANT\')"]').click()
+        sleep(2)
+        tenantName = driver.find_element_by_css_selector('input[ng-model="tenantDetails.tenantName"]')
+        tenantName.clear()
+        sleep(2)
+        tenantName.send_keys(name)
+        sleep(2)
+        driver.find_element_by_css_selector('button[ng-click="submitParkingTenant()"]').click()
+        sleep(2)
+        
+        numOfTenant = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
+        i=1
+        check = 0
+        while i<=numOfTenant:
+            xpath = '//table[@class="table table-hover"]/tbody/tr[%s]/td/div[%s]/span/b' %(i, 1)
+            tena = driver.find_elements_by_xpath(xpath)
+            print 'check is: ', tena[0].text
+            if name==tena[0].text:
+                check = check+1
+                break
+            i = i+1
+        if check==0:
+            raise ValueError('Cannot create new tenant via UI')
+        count=count+1
+    driver.close()
     
 def delete_tenant_ui(serverIp, uiport, port, placeName, tenantName):
     driver = view_tenant_management(serverIp, uiport, placeName)
@@ -294,8 +296,7 @@ def delete_veh_in_tenant_ui(serverIp, port, uiport, placeName, tenantName, numbe
      
     driver.close()    
     
-def add_reserve_slot_ui(serverIp, uiport, port, placeName, tenantName, numSlots):
-    tenantId = get_tenant_id(serverIp, placeName, tenantName)
+def add_reserve_slot_ui(serverIp, uiport, placeName, tenantName, numSlots):
     driver = open_parking_place(serverIp, uiport)
     numOfPlaces = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
     print 'The number of parking places is ', numOfPlaces
@@ -332,8 +333,26 @@ def add_reserve_slot_ui(serverIp, uiport, port, placeName, tenantName, numSlots)
     
     driver.close()
     
-def delete_parking_place_ui():
-    print 'Will implement later'    
+def delete_parking_place_ui(serverIp, uiport, placeName):
+    driver = open_parking_place(serverIp, uiport)
+    numOfPlaces = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
+    print 'The number of parking places is ', numOfPlaces
+    i=1
+    while i<=numOfPlaces:
+        xpathName = '//table[@class="table table-hover"]/tbody/tr[%s]/td[1]/h5' %i
+        place = driver.find_elements_by_xpath(xpathName)
+        if place[0].text==placeName:
+            print 'Started reserving slots in parking place %s' %placeName
+            xpathReserve = '//table[@class="table table-hover"]/tbody/tr[%s]/td[6]/div/div[8]/button' %i
+            reserveSlot = driver.find_elements_by_xpath(xpathReserve)
+            reserveSlot[0].click()
+            sleep(2)
+            break
+        i=i+1
+        
+    driver.find_element_by_css_selector('button[ng-click="goBackToPreviousScreenForVehicleexist(place)"]').click()
+    sleep(2)
+    driver.close()
 
 def title_should_be(driver, title):
     print driver.title

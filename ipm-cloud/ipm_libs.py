@@ -194,6 +194,19 @@ def get_tenant_id(serverIp, placeName, tenantName):
     tenantId = x.fetchone()[0]
     return tenantId
 
+def get_tenant_info(serverIp, port, tenantId):
+    tenantUrl = 'http://' + serverIp + ':' + port + '/tenantManagment/tenant/' + str(tenantId)
+    header = {'Content-Type': 'application/json'}
+    try:
+        r = requests.get(tenantUrl, headers=header)
+    except ValueError:
+        print 'Cannot get tenant info via api: %s.\n Status code is: %s' %(tenantUrl, r.status_code)
+        
+    if r.status_code!=200:
+        errMessage = 'Cannot get tenant info via api: %s.\n Status code is: %s' %(tenantUrl, r.status_code)
+        raise ValueError(errMessage)
+    return r.json()['data']
+
 def get_all_tenant_of_place(serverIp, port, placeName):
     parkingPlace = get_parking_place_info(serverIp, placeName)
     tenantUrl = 'http://' + serverIp + ':' + port + '/tenantManagment/tenants/' + str(parkingPlace.id)

@@ -2,7 +2,7 @@
 from selenium import webdriver
 from time import sleep
 from ipm_libs import get_number_of_parking_place, get_parking_place_info, get_tenant_id, get_all_vehicle_of_tenant,\
-                        get_all_tenant_of_place
+                        get_all_tenant_of_place, get_tenant_info
 
 
 
@@ -294,7 +294,8 @@ def delete_veh_in_tenant_ui(serverIp, port, uiport, placeName, tenantName, numbe
      
     driver.close()    
     
-def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName, numSlots):
+def add_reserve_slot_ui(serverIp, uiport, port, placeName, tenantName, numSlots):
+    tenantId = get_tenant_id(serverIp, placeName, tenantName)
     driver = open_parking_place(serverIp, uiport)
     numOfPlaces = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
     print 'The number of parking places is ', numOfPlaces
@@ -321,13 +322,19 @@ def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName, numSlots):
         raise ValueError(errMessage)
     tenaName[0].click()
     sleep(2)
-    numReserveSlot = driver.find_element_by_css_selector('input[@ng-model="reserveDetails.reservedSlots"]')
+    numReserveSlot = driver.find_element_by_css_selector('input[ng-model="reserveDetails.reservedSlots"]')
     numReserveSlot.clear()
     sleep(1)
     numReserveSlot.send_keys(numSlots)
     sleep(1)
-    driver.find_element_by_css_selector('button[@ng-click="submitReservedSlot()"]').click()
+    driver.find_element_by_css_selector('button[ng-click="submitReservedSlot()"]').click()
     sleep(2)
+    
+    tenantInfo = get_tenant_info(serverIp, port, tenantId)
+    numSlotOfTenant = tenantInfo['reservedSlots']
+    if numSlotOfTenant!=numSlots:
+        errMessage = 'Updated reserved slots for tenant %s failed' %tenantName
+        raise ValueError(errMessage)
     
     driver.close()
     

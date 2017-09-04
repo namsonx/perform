@@ -330,12 +330,6 @@ def add_reserve_slot_ui(serverIp, uiport, port, placeName, tenantName, numSlots)
     driver.find_element_by_css_selector('button[ng-click="submitReservedSlot()"]').click()
     sleep(2)
     
-    tenantInfo = get_tenant_info(serverIp, port, tenantId)
-    numSlotOfTenant = tenantInfo['reservedSlots']
-    if numSlotOfTenant!=numSlots:
-        errMessage = 'Updated reserved slots for tenant %s failed' %tenantName
-        raise ValueError(errMessage)
-    
     driver.close()
     
 def delete_parking_place_ui():

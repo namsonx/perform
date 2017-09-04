@@ -207,6 +207,11 @@ def get_tenant_info(serverIp, port, tenantId):
         raise ValueError(errMessage)
     return r.json()['data']
 
+def get_reserved_slot_of_tenant(serverIp, port, placeName, tenantName):
+    tenantId = get_tenant_id(serverIp, placeName, tenantName)
+    tenantInfo = get_tenant_info(serverIp, port, tenantId)
+    return tenantInfo['reservedSlots']
+
 def get_all_tenant_of_place(serverIp, port, placeName):
     parkingPlace = get_parking_place_info(serverIp, placeName)
     tenantUrl = 'http://' + serverIp + ':' + port + '/tenantManagment/tenants/' + str(parkingPlace.id)

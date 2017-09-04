@@ -337,11 +337,13 @@ def delete_parking_place_ui(serverIp, uiport, placeName):
     driver = open_parking_place(serverIp, uiport)
     numOfPlaces = len(driver.find_elements_by_xpath("//table[@class='table table-hover']/tbody/tr"))
     print 'The number of parking places is ', numOfPlaces
+    check=0
     i=1
     while i<=numOfPlaces:
         xpathName = '//table[@class="table table-hover"]/tbody/tr[%s]/td[1]/h5' %i
         place = driver.find_elements_by_xpath(xpathName)
         if place[0].text==placeName:
+            check = check + 1
             print 'Started reserving slots in parking place %s' %placeName
             xpathReserve = '//table[@class="table table-hover"]/tbody/tr[%s]/td[6]/div/div[8]/button' %i
             reserveSlot = driver.find_elements_by_xpath(xpathReserve)
@@ -349,8 +351,20 @@ def delete_parking_place_ui(serverIp, uiport, placeName):
             sleep(2)
             break
         i=i+1
+    if check==0:
+        errMessage = 'There is no parking place with name %s. Deleting failed' %placeName
+        raise ValueError(errMessage)
+    if i==1:
+        try:    
+            driver.find_element_by_css_selector('button[ng-click="goBackToPreviousScreenForVehicleexist(place)"]').click()
+        except ValueError:
+            print 'Cannot delete parking place %s ' % placeName
+    else:
+        try:
+            driver.find_element_by_css_selector('button[ng-click="goBackToPreviousScreenInPlaceLevel(place)"]').click()
+        except ValueError:
+            print 'Cannot delete parking place %s ' % placeName
         
-    driver.find_element_by_css_selector('button[ng-click="goBackToPreviousScreenForVehicleexist(place)"]').click()
     sleep(2)
     driver.close()
 

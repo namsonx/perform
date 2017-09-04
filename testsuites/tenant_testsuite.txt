@@ -68,21 +68,24 @@ Test Delete Tenant Via UI
 	[Tags]
 	delete_tenant_ui     ${server_ip}     ${uiport}     ${port}     ${placeName}      tenant14
 	sleep    3	
+	
 Test Reserve Slots Tenant UI
 	[Tags]
-	add_reserve_slot_ui     ${server_ip}     ${uiport}     ${port}      ${placeName}      tenant02     ${3}
+	add_reserve_slot_ui     ${server_ip}     ${uiport}      ${placeName}      tenant02     ${3}
 	${numReservedSlot} =      get_reserved_slot_of_tenant     ${server_ip}     ${port}      ${placeName}      tenant02
 	Should Be Equal     ${numReservedSlot}      ${3}
+	Sleep    3
 	
 Test Reserve Slots Tenant Greater Than Total Slot UI
 	[Tags]
-	add_reserve_slot_ui     ${server_ip}     ${uiport}     ${port}      ${placeName}      tenant02     ${11}
+	add_reserve_slot_ui     ${server_ip}     ${uiport}      ${placeName}      tenant02     ${11}
 	${numReservedSlot} =      get_reserved_slot_of_tenant     ${server_ip}     ${port}      ${placeName}      tenant02
 	Should Not Be Equal     ${numReservedSlot}      ${11}	
+	Sleep    3
 	
 Test Reserve Slots Tenant With Negative Number UI
 	[Tags]
-	add_reserve_slot_ui     ${server_ip}     ${uiport}     ${port}      ${placeName}      tenant02     ${-1}
+	add_reserve_slot_ui     ${server_ip}     ${uiport}      ${placeName}      tenant02     ${-1}
 	${numReservedSlot} =      get_reserved_slot_of_tenant     ${server_ip}     ${port}      ${placeName}      tenant02
 	Should Not Be Equal     ${numReservedSlot}      ${-1}
 	

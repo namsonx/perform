@@ -302,7 +302,6 @@ def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName):
     while i<=numOfPlaces:
         xpathName = '//table[@class="table table-hover"]/tbody/tr[%s]/td[1]/h5' %i
         place = driver.find_elements_by_xpath(xpathName)
-        print 'Place name is ', place[0].text
         if place[0].text==placeName:
             print 'Started reserving slots in parking place %s' %placeName
             xpathReserve = '//table[@class="table table-hover"]/tbody/tr[%s]/td[6]/div/div[3]/button' %i
@@ -313,7 +312,7 @@ def update_reserve_slot_ui(serverIp, uiport, placeName, tenantName):
         i=i+1
     driver.find_element_by_css_selector('span[ng-click="$select.activate()"]').click()
     sleep(2)
-    numOfTenant = len(driver.find_element_by_css_selector('li[class="ui-selecte-choices-group"]'))
+    numOfTenant = len(driver.find_elements_by_xpath('//li[@class="ui-selecte-choices-group"]'))
     print 'Number of tenants in place %s is %s ' %(placeName, numOfTenant)
     
 def delete_parking_place_ui():

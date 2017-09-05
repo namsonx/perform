@@ -6,8 +6,11 @@ from libs import connect_db
 
 
 def create_parking_place(serverIp, port, placeName, unicode, **kwargs):
-    
-    parkingPlace = parking_place(placeName, unicode, **kwargs)
+    args = {}
+    if kwargs is not None:
+        for key, value in kwargs.iteritems():
+            args[key] = value
+    parkingPlace = parking_place(placeName, unicode, **args)
     headers = {"content-type": "application/json"}
     data = {"placeName": parkingPlace.name, "unicode": parkingPlace.unicode, "autoExit": parkingPlace.autoExit, "availability": parkingPlace.availability,
              "createdBy": parkingPlace.createdBy, "lang": parkingPlace.long, "lat": parkingPlace.lat, "park_type": parkingPlace.parkType, "passRuleName": parkingPlace.passRuleName}
@@ -97,7 +100,10 @@ def delete_parking_place(serverIp, placeName):
     print 'Deleted parking successul'    
 
 def create_parking_block(serverIp, port, number, placeId, blockName, unicode, **kwargs):
-    
+    args = {}
+    if kwargs is not None:
+        for key, value in kwargs.iteritems():
+            args[key] = value
     blockList = []
     headers = {"content-type": "application/json"}    
     createParkingBlockURL = 'http://' + serverIp + ':' + port + '/admin/createParkingBlock'
@@ -107,7 +113,7 @@ def create_parking_block(serverIp, port, number, placeId, blockName, unicode, **
         uni = unicode
         name = name + str(count)
         uni = uni + str(count)
-        parkingBlock = parking_block(placeId, name, uni, **kwargs)
+        parkingBlock = parking_block(placeId, name, uni, **args)
         data = {'availability': parkingBlock.availability, 'block_name': parkingBlock.name, 'created_by': parkingBlock.createdBy, 'parkGuidanceURL': parkingBlock.parkGuidanceURL, 
                 'park_for': parkingBlock.parkFor, 'placeid': parkingBlock.placeId, 'solution_type': parkingBlock.solutionType, 'unicode': parkingBlock.unicode}
 

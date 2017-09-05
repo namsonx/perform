@@ -128,12 +128,16 @@ def create_parking_block(serverIp, port, number, placeId, blockName, unicode, **
 def get_block_id(serverIp, placeId, blockName):
     sqlConn = connect_db(serverIp, 'root', 'SmartCity@123', 'ipmtest')
     x = sqlConn.cursor()
-    sqlQuery = 'SELECT id FROM sm_ipm_park_block WHERE place_id =\'%s\' AND block_name = \'%s\'' %(placeId, blockName)
+    sqlQuery = 'SELECT id FROM sm_ipm_park_block WHERE place_id = %s AND block_name = \'%s\'' %(placeId, blockName)
     x.execute(sqlQuery)
     blockId = x.fetchone()[0]
     return blockId
     
-def create_parking_slot(serverIp, port, slotType ,number, placeId, blockId, slotName, tagId, unicode, **kwargs):
+def create_parking_slot(serverIp, port, slotType ,number , placeId, blockId, slotName, tagId, unicode, **kwargs):
+    args = {}
+    if kwargs is not None:
+        for key, value in kwargs.iteritems():
+            args[key] = value
     
     slotList = []
     if slotType=='sensor':
@@ -158,7 +162,7 @@ def create_parking_slot(serverIp, port, slotType ,number, placeId, blockId, slot
             name = name + str(count)
         uni = unicode
         uni = uni + str(count)
-        parkingSlot = parking_slot(placeId, blockId, name, tag, uni, **kwargs)
+        parkingSlot = parking_slot(placeId, blockId, name, tag, uni, **args)
         data = {'placeId': parkingSlot.placeId, 'blockId': parkingSlot.blockId, 'slotName': parkingSlot.name, 'tagId': parkingSlot.tagId, 'unicode': parkingSlot.unicode,
                 'availability': parkingSlot.availability, 'createdBy': parkingSlot.createdBy}
         

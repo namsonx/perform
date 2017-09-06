@@ -116,6 +116,8 @@ def create_parking_block(serverIp, port, number, placeId, blockName, unicode, **
         parkingBlock = parking_block(placeId, name, uni, **args)
         data = {'availability': parkingBlock.availability, 'block_name': parkingBlock.name, 'created_by': parkingBlock.createdBy, 'parkGuidanceURL': parkingBlock.parkGuidanceURL, 
                 'park_for': parkingBlock.parkFor, 'placeid': parkingBlock.placeId, 'solution_type': parkingBlock.solutionType, 'unicode': parkingBlock.unicode}
+        
+        print json.dumps(data)
 
         try:
             r = requests.post(createParkingBlockURL, data=json.dumps(data), headers=headers)

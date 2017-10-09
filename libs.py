@@ -2,7 +2,7 @@ import MySQLdb
 from objects import parking_location, camera_obj, cam_moxa_cfg
 
 
-def connect_db(host='localhost', user='root', password='SmartCity@123', db='sim'):
+def connect_db(host='localhost', user='root', password='root', db='sim'):
     try:
         sql_connect = MySQLdb.connect(host=host,
                                       user=user,

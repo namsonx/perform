@@ -75,11 +75,11 @@ def main():
     workspace = workspace.strip(' \n\t')
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\tenant_testsuite.txt')
-    parser.add_argument('-s', '--server_ip', help='Input server ip address', default='192.168.0.223')
-    parser.add_argument('-p', '--port', help='Input port number', default='50201')
+    parser.add_argument('-ts', '--testsuite', help='Path to testsuite file', default='C:\\Users\\mas2hc\\Desktop\\workspace\\perform\\testsuites\\booking_simulation.txt')
+    parser.add_argument('-s', '--server_ip', help='Input server ip address', default='192.168.0.179')
+    parser.add_argument('-p', '--port', help='Input port number', default='50211')
     parser.add_argument('-uip', '--uiport', help='Input UI port number', default='50202')
-    parser.add_argument('-m', '--mode', help='Input mode to run the test local or cloud', default='cloud')
+    parser.add_argument('-m', '--mode', help='Input mode to run the test local or cloud', default='local')
     parser.add_argument('-d', '--outputdir', help='variable', default=workspace)
     
     args = parser.parse_args()

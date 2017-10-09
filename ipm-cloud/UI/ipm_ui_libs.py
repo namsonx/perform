@@ -1,6 +1,7 @@
 
 from selenium import webdriver
 from time import sleep
+from selenium.webdriver.common.keys import Keys
 from ipm_libs import get_number_of_parking_place, get_parking_place_info, get_tenant_id, get_all_vehicle_of_tenant,\
                         get_all_tenant_of_place
 
@@ -228,28 +229,48 @@ def add_vehicle_to_tenant_ui(serverIp, uiport, port, placeName, tenantName, vehL
                 sleep(2)
                 if veh.vehicleType==2:
                     print 'vehicleType is Two Wheeler'
+                    vehType.send_keys('Two Wheeler')
+                    sleep(2)
+                    vehType.send_keys(Keys.RETURN)
+                    '''
                     typeOfVeh = '//li[@class="ui-select-choices-group"]/div/a/div[text()="Two Wheeler "]'
                     vehicleType = driver.find_elements_by_xpath(typeOfVeh)
                     print len(vehicleType)
                     vehicleType[0].click()
+                    '''
                 if veh.vehicleType==3:
                     print 'vehicleType is Three Wheeler'
+                    vehType.send_keys('Three Wheeler')
+                    sleep(2)
+                    vehType.send_keys(Keys.RETURN)
+                    '''
                     typeOfVeh = '//li[@class="ui-select-choices-group"]/div/a/div[text()="Three Wheeler "]'
                     vehicleType = driver.find_elements_by_xpath(typeOfVeh)
                     print len(vehicleType)
                     vehicleType[0].click()
+                    '''
                 if veh.vehicleType==4:
                     print 'vehicleType is Four Wheeler'
+                    vehType.send_keys('Four Wheeler')
+                    sleep(2)
+                    vehType.send_keys(Keys.RETURN)
+                    '''
                     typeOfVeh = '//li[@class="ui-select-choices-group"]/div/a/div[text()="Four Wheeler"]'
                     vehicleType = driver.find_elements_by_xpath(typeOfVeh)
                     print len(vehicleType)
                     vehicleType[0].click()
+                    '''
                 if veh.vehicleType==6:
                     print 'vehicleType is Six Wheeler'
+                    vehType.send_keys('Six Wheeler')
+                    sleep(2)
+                    vehType.send_keys(Keys.RETURN)
+                    '''
                     typeOfVeh = '//li[@class="ui-select-choices-group"]/div/a/div[text()="Six Wheeler"]'
                     vehicleType = driver.find_elements_by_xpath(typeOfVeh)
                     print len(vehicleType)
                     vehicleType[0].click()
+                    '''
                 sleep(2)
                 driver.find_element_by_css_selector('button[ng-click="addVehicle()"]').click()
                 sleep(2)

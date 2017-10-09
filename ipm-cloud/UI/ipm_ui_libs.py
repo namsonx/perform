@@ -224,7 +224,7 @@ def add_vehicle_to_tenant_ui(serverIp, uiport, port, placeName, tenantName, vehL
                 tenantVeh.send_keys(veh.vehicleNo)
                 sleep(2)
                 driver.find_element_by_css_selector('span[class="ui-select-match-text pull-left"]').click()
-                vehType = driver.find_element_by_css_selector('input[placeholder="Select Vehicle type"]')
+                vehType = driver.find_element_by_css_selector('input[placeholder="Select Vehicle Type"]')
                 vehType.clear()
                 sleep(2)
                 if veh.vehicleType==2:

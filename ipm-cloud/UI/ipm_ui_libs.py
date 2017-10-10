@@ -337,13 +337,21 @@ def add_reserve_slot_ui(serverIp, uiport, placeName, tenantName, numSlots):
     sleep(2)
     numOfTenant = len(driver.find_elements_by_xpath('//li[@id="ui-select-choices-0"]/div/a'))
     print 'Number of tenants in place %s is %s ' %(placeName, numOfTenant)
+    '''
     xpathTenant = '//li[@id="ui-select-choices-0"]/div/a/div[text()="%s"]' % tenantName
     tenaName = driver.find_elements_by_xpath(xpathTenant)
     if not tenaName:
         errMessage = 'There is no tenant with name %s in parking place %s' %(tenantName, placeName)
         raise ValueError(errMessage)
     tenaName[0].click()
+    '''
+    tenaName = driver.find_element_by_css_selector('input[placeholder="Select Tenant"]')
+    tenaName.clear()
     sleep(2)
+    tenaName.send_keys(tenantName)
+    sleep(2)
+    tenaName.send_keys(Keys.RETURN)
+    sleep(1)
     numReserveSlot = driver.find_element_by_css_selector('input[ng-model="reserveDetails.reservedSlots"]')
     numReserveSlot.clear()
     sleep(1)
